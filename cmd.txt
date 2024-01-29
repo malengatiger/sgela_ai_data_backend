@@ -72,4 +72,12 @@ gcloud secrets add-iam-policy-binding chatGPTKey \
   gcloud projects add-iam-policy-binding skunkworks-ai --member="serviceAccount:stealth-secret-manager@skunkworks-ai.iam.gserviceaccount.com" --role=roles/secretmanager.secretAccessor
 
 //
+
+AUSPMI7C_lJzKNbXAuKvIXpLINLxZ1hsl5vSICdG7f8kyiVVQ39WSP2wfHusW9_QkyHHlzNJrVtC9hLy
+curl -v -X POST "https://api-m.sandbox.paypal.com/v1/oauth2/token"\
+ -u "AUSPMI7C_lJzKNbXAuKvIXpLINLxZ1hsl5vSICdG7f8kyiVVQ39WSP2wfHusW9_QkyHHlzNJrVtC9hLy
+"\
+ -H "Content-Type: application/x-www-form-urlencoded"\
+ -d "grant_type=client_credentials"
+
 gcloud iam service-accounts get-iam-policy stealth-secret-manager@skunkworks-ai.iam.gserviceaccount.com --format json

@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Enumeration;
 
@@ -30,29 +33,34 @@ import java.util.Enumeration;
 public class AuthenticationFilter extends OncePerRequestFilter {
     private static final String xx = E.COFFEE + E.COFFEE + E.COFFEE;
     String mm = E.AMP + E.AMP + E.AMP + E.AMP + "MonitorAuthenticationFilter";
-
-
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
     private static final Gson G = new GsonBuilder().setPrettyPrinting().create();
-//    private final DataService dataService;
-//    private final GioSubscriptionService subscriptionService;
     @Value("${spring.profiles.active}")
     private String profile;
 
+    @Value("${authOn}")
+    private int authOn;
+
     @Override
-    protected void doFilterInternal(@NotNull HttpServletRequest httpServletRequest,
-                                    @NotNull HttpServletResponse httpServletResponse,
+    protected void doFilterInternal(HttpServletRequest httpServletRequest,
+                                    HttpServletResponse httpServletResponse,
                                     @NotNull FilterChain filterChain) throws ServletException, IOException {
 
+        if (authOn == 0) {
+            logger.info(mm+" Authentication is currently turned off. Remember this, fella!");
+            doFilter(httpServletRequest, httpServletResponse, filterChain);
+            return;
+        }
         String url = httpServletRequest.getRequestURL().toString();
         if (profile.equalsIgnoreCase("test")) {
             doFilter(httpServletRequest, httpServletResponse, filterChain);
             return;
         }
 
-        if (url.contains("uploadFile")) {   //this is my local machine
-            logger.info(E.ANGRY + E.ANGRY + "this request is not subject to authentication: "
-                    + E.HAND2 + url);
+        if (url.contains("webhook") || url.contains("paymentComplete")
+                || url.contains("paymentError")) {   //this is my local machine
+            logger.info(E.ANGRY + E.ANGRY + "this request is from payment service; ALLOWED! "
+                    + E.HAND2 + url + "  \uD83D\uDC9C\uD83D\uDC9C\uD83D\uDC9C");
             doFilter(httpServletRequest, httpServletResponse, filterChain);
             return;
         }
@@ -83,6 +91,12 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             logger.info(mm + "  \uD83D\uDE0E \uD83D\uDE0E \uD83D\uDE0E allowing call from localhost or 192.168.86.242");
             doFilter(httpServletRequest, httpServletResponse, filterChain);
             return;
+        }
+
+        //todo - turn authentication on when ready
+        int num = 11;
+        if (num == 11) {
+
         }
 
         String m = httpServletRequest.getHeader("Authorization");
@@ -141,19 +155,32 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     private void doFilter(@NotNull HttpServletRequest httpServletRequest,
                           @NotNull HttpServletResponse httpServletResponse,
                           FilterChain filterChain) throws IOException, ServletException {
+
         filterChain.doFilter(httpServletRequest, httpServletResponse);
 
-        if (httpServletResponse.getStatus() != 200) {
-            logger.info(reds + " \n" + httpServletRequest.getRequestURI() + " \uD83D\uDD37 Status Code: "
-                    + httpServletResponse.getStatus() + "  \uD83D\uDCA6\uD83D\uDCA6  buffer size: " +
-                    httpServletResponse.getBufferSize());
-        } else {
+        if (httpServletResponse.getStatus() == 200) {
             logger.info("\uD83D\uDD37\uD83D\uDD37\uD83D\uDD37\uD83D\uDD37"
                     + httpServletRequest.getRequestURI() + " \uD83D\uDD37 Status Code: "
                     + httpServletResponse.getStatus() + "  \uD83D\uDD37 \uD83D\uDD37 \uD83D\uDD37 ");
+
+        }
+        if (httpServletResponse.getStatus() != 200) {
+            logger.info(reds + " " + httpServletRequest.getRequestURI() + " \uD83D\uDD37 Status Code: "
+                    + httpServletResponse.getStatus() + "  \uD83D\uDCA6\uD83D\uDCA6  ");
+//            logger.info(mm+ " Some fucking error: "
+//                    + extractResponseBody(httpServletResponse));
+//            sendError(httpServletResponse,"Fucked, fucked, fucked!");
         }
     }
-
+    private String extractResponseBody(HttpServletResponse httpServletResponse) throws IOException {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+            servletOutputStream.flush();
+            servletOutputStream.close();
+            outputStream.writeTo(servletOutputStream);
+            return outputStream.toString();
+        }
+    }
     static final String reds = E.RED_DOT + E.RED_DOT + E.RED_DOT + E.RED_DOT + E.RED_DOT + " Bad Response Status:";
 
     private void print(@NotNull HttpServletRequest httpServletRequest) {

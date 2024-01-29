@@ -21,12 +21,9 @@ public class RequestFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String ipAddress = getClientIpAddress(request);
         String fullUrl = getFullUrl(request);
 
         logger.info(mm + "Incoming missile: " + fullUrl);
-        logger.info(mm + "IP address: " + ipAddress);
-
         // Continue the filter chain
         filterChain.doFilter(servletRequest, servletResponse);
     }
@@ -36,21 +33,6 @@ public class RequestFilter implements Filter {
         // Cleanup logic, if needed
     }
 
-
-    private String getClientIpAddress(HttpServletRequest request) {
-        String ipAddress = request.getHeader("X-Forwarded-For");
-        if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
-            ipAddress = request.getRemoteAddr();
-        } else {
-            // The X-Forwarded-For header can contain multiple IP addresses separated by commas.
-            // The client's IP address is typically the first one in the list.
-            int commaIndex = ipAddress.indexOf(",");
-            if (commaIndex != -1) {
-                ipAddress = ipAddress.substring(0, commaIndex);
-            }
-        }
-        return ipAddress;
-    }
 
     private String getFullUrl(HttpServletRequest request) {
         StringBuilder fullUrl = new StringBuilder();

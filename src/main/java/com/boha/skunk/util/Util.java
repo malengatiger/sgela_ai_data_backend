@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class Util {
@@ -59,5 +60,11 @@ public class Util {
             }
         }
         throw new Exception("Cannot find file extension");
+    }
+
+    public static Long generateUniqueLong() {
+        UUID uuid = UUID.randomUUID();
+        long mostSignificantBits = uuid.getMostSignificantBits();
+        return Math.abs(mostSignificantBits);
     }
 }

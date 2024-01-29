@@ -228,7 +228,17 @@ public class SgelaFirestoreService {
         }
         return 0;
     }
-
+    
+    public String addSponsorPaymentType(SponsorPaymentType type) throws Exception {
+        CollectionReference collectionRef = firestore.collection(SponsorPaymentType.class.getSimpleName());
+        var docRef = collectionRef.add(type);
+        return docRef.get().getPath();
+    }
+    public String addOrganizationSponsorPaymentType(OrganizationSponsorPaymentType type) throws Exception {
+        CollectionReference collectionRef = firestore.collection(OrganizationSponsorPaymentType.class.getSimpleName());
+        var docRef = collectionRef.add(type);
+        return docRef.get().getPath();
+    }
     private int increaseSubscriptionUsers(Long subscriptionId) throws Exception {
         CollectionReference collectionRef = firestore.collection(Subscription.class.getSimpleName());
         Query query = collectionRef.whereEqualTo("subscriptionId", subscriptionId);
@@ -453,19 +463,18 @@ public class SgelaFirestoreService {
     }
 
     public Organization getOrganization(Long organizationId) throws ExecutionException, InterruptedException {
-        List<QueryDocumentSnapshot> queryDocumentSnapshotList =
-                getDocumentsByLongProperty(Organization.class.getSimpleName(),
-                        "id", organizationId, null);
-        List<Organization> organizations = new ArrayList<>();
-        for (QueryDocumentSnapshot snapshot : queryDocumentSnapshotList) {
-            Organization s = snapshot.toObject(Organization.class);
-            organizations.add(s);
-        }
 
-        if (organizations.isEmpty()) {
-            return null;
+        CollectionReference collectionReference = firestore.collection("Organization");
+        Query query = collectionReference.whereEqualTo("id", organizationId);
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+        QuerySnapshot snapshot = querySnapshot.get();
+        var m = snapshot.getDocuments();
+        Organization organization = null;
+        for (QueryDocumentSnapshot snap : m) {
+            organization = snap.toObject(Organization.class);
         }
-        return organizations.get(0);
+        logger.info(mm + "getOrganization: documents found: " + m.size());
+        return organization;
     }
 
     public List<Pricing> getPricings(Long countryId) throws ExecutionException, InterruptedException {
@@ -506,7 +515,7 @@ public class SgelaFirestoreService {
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
         QuerySnapshot snapshot = querySnapshot.get();
         var m = snapshot.getDocuments();
-        logger.info(mm + "documents found: " + m.size());
+        logger.info(mm + "getDocumentsByLongProperty documents found: " + m.size());
         return m;
     }
 

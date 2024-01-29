@@ -10,6 +10,7 @@ public class Subscription {
     private String organizationName;
     private Pricing pricing;
     private String date;
+    private String payfastToken;
     private int subscriptionType; //see Constants
     //
     //(name = "user_id")
@@ -37,6 +38,14 @@ public class Subscription {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getPayfastToken() {
+        return payfastToken;
+    }
+
+    public void setPayfastToken(String payfastToken) {
+        this.payfastToken = payfastToken;
     }
 
     public Pricing getPricing() {

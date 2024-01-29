@@ -48,17 +48,17 @@ public class SgelaAIDataBackEnd implements ApplicationListener<ApplicationReadyE
 		logger.info(mm+" SgelaAIDataBackEnd onApplicationEvent: timestamp: "
 				+ event.getTimestamp());
 		logger.info(mm+"servletContext path: \uD83D\uDD90\uD83C\uDFFD "+servletContext.getContextPath());
+
 		showApis(event);
-//		findAnnotatedClasses();
 		InetAddress ip;
 		try {
+			DirectoryUtils.deleteFilesInDirectories();
 			ip = InetAddress.getLocalHost();
 			logger.info(E.PEAR + E.PEAR + E.PEAR + E.PEAR
 					+ " Current IP address : " + ip.getHostAddress());
 			IpAddress address = getIpAddress2();
 			logger.info(E.PEAR + E.PEAR + E.PEAR + E.PEAR
 					+ " Current Real IP address : " + address.ipAddress + " port: " + address.port);
-			DirectoryUtils.deleteFilesInDirectories();
 			if (activeProfile.equalsIgnoreCase("dev")) {
 				logger.info(E.PEAR + E.PEAR + E.PEAR + E.PEAR
 						+ " Active Profile : Development");

@@ -36,22 +36,19 @@ public class OrganizationService {
     public List<Organization> getOrganizations() throws Exception {
         return sgelaFirestoreService.getAllDocuments(Organization.class);
     }
-    public Long generateUniqueLong() {
-        UUID uuid = UUID.randomUUID();
-        long mostSignificantBits = uuid.getMostSignificantBits();
-        return Math.abs(mostSignificantBits);
-    }
-    public Organization createSgelaOrganization(File logoFile, File splashFile) throws Exception {
-        logger.info(mm+"createSgelaOrganization starting ...logoFile: " + logoFile.length() + " splashFile: " + splashFile.length());
 
-        Long id = generateUniqueLong();
-        String logoUrl = cloudStorageService.uploadFile(logoFile,id,CloudStorageService.ORG_IMAGE_FILE);
-        String splashUrl = cloudStorageService.uploadFile(splashFile,id,CloudStorageService.ORG_IMAGE_FILE);
+
+    public Organization createSgelaOrganization(File logoFile, File splashFile) throws Exception {
+        logger.info(mm + "createSgelaOrganization starting ...logoFile: " + logoFile.length() + " splashFile: " + splashFile.length());
+
+        Long id = Util.generateUniqueLong();
+        String logoUrl = cloudStorageService.uploadFile(logoFile, id, CloudStorageService.ORG_IMAGE_FILE);
+        String splashUrl = cloudStorageService.uploadFile(splashFile, id, CloudStorageService.ORG_IMAGE_FILE);
         Country country = sgelaFirestoreService.getCountryByName("South Africa");
         City city = sgelaFirestoreService.getCityByName("Pretoria");
 
-        logger.info(mm+"createSgelaOrganization: country ..." + country.getName());
-        logger.info(mm+"createSgelaOrganization: city ..." + city.getName());
+        logger.info(mm + "createSgelaOrganization: country ..." + country.getName());
+        logger.info(mm + "createSgelaOrganization: city ..." + city.getName());
 
         Pricing ps = new Pricing();
         ps.setCurrency(country.getCurrencyName());
@@ -59,7 +56,7 @@ public class OrganizationService {
         ps.setMonthlyPrice(25.00);
         ps.setCountryId(country.getId());
         ps.setDate(new Date().toInstant().toString());
-        ps.setId(generateUniqueLong());
+        ps.setId(Util.generateUniqueLong());
         sgelaFirestoreService.addDocument(ps);
 
         Subscription subscription = new Subscription();
@@ -70,11 +67,11 @@ public class OrganizationService {
         subscription.setOrganizationId(id);
         subscription.setOrganizationName("SgelaAI Inc.");
         subscription.setPricing(ps);
-        subscription.setId(generateUniqueLong());
+        subscription.setId(Util.generateUniqueLong());
 
 
         User user = new User();
-        user.setId(generateUniqueLong());
+        user.setId(Util.generateUniqueLong());
         user.setFirstName("Aubrey");
         user.setLastName("Malabie");
         user.setCellphone("+27655917675");
@@ -85,7 +82,6 @@ public class OrganizationService {
         user.setSubscriptionDate(user.getDate());
         user.setSubscriptionId(subscription.getId());
         user.setOrganizationId(id);
-
 
 
         Organization organization = new Organization();
@@ -103,7 +99,7 @@ public class OrganizationService {
         organization.setTagLine("AI for African People!");
         organization.setMaxUsers(10000);
 
-        logger.info(mm+"createSgelaOrganization: add org to database");
+        logger.info(mm + "createSgelaOrganization: add org to database");
 
         var mUser = userService.createUser(organization.getAdminUser());
         organization.setAdminUser(mUser);
@@ -113,42 +109,64 @@ public class OrganizationService {
         sgelaFirestoreService.addDocument(subscription);
 
         var m = sgelaFirestoreService.getOrganization(organization.getId());
-        logger.info(mm+ "Organization: " + m.getName() + " added to database");
+        logger.info(mm + "Organization: " + m.getName() + " added to database");
         return m;
     }
-    public Organization addOrganization(Organization organization) throws Exception {
-        organization.setId(generateUniqueLong());
 
-        logger.info(mm+ "addOrganization: org to be added: " + G.toJson(organization));
+    public Organization addOrganization(Organization organization) throws Exception {
+        organization.setId(Util.generateUniqueLong());
+        organization.setDate(new Date().toInstant().toString());
+
+        logger.info(mm + "addOrganization: org to be added: " + G.toJson(organization));
         if (organization.getAdminUser() == null) {
             throw new Exception("Admin user not found");
         }
+        organization.getAdminUser().setId(Util.generateUniqueLong());
         organization.getAdminUser().setOrganizationId(organization.getId());
-        organization.getAdminUser().setId(generateUniqueLong());
+        organization.getAdminUser().setDate(new Date().toInstant().toString());
         organization.getAdminUser().setActiveFlag(true);
 
-        var mUser = userService.createUser(organization.getAdminUser());
-        organization.setAdminUser(mUser);
-        sgelaFirestoreService.addDocument(organization);
+        try {
+            var mUser = userService.createUser(organization.getAdminUser());
+            organization.setAdminUser(mUser);
+            sgelaFirestoreService.addDocument(organization);
 
-        var m = sgelaFirestoreService.getOrganization(organization.getId());
-        logger.info(mm+ "Organization: " + m.getName() + " added to database");
-        return m;    }
+            var m = sgelaFirestoreService.getOrganization(organization.getId());
+            logger.info(mm + "Organization: " + m.getName() + " added to database");
+            return m;
+        } catch (Exception e) {
+            logger.info(mm + "Fucking error, does not percolate! " + e.getMessage());
+            throw e;
+        }
+    }
 
-    public Organization uploadOrganizationFiles(Organization organization, File logoFile, File splashFile) throws Exception {
-        String logoUrl = cloudStorageService.uploadFile(logoFile,organization.getId(),CloudStorageService.ORG_IMAGE_FILE);
-        String splashUrl = cloudStorageService.uploadFile(splashFile,organization.getId(),CloudStorageService.ORG_IMAGE_FILE);
-        organization.setLogoUrl(logoUrl);
-        organization.setSplashUrl(splashUrl);
-        organization.setId(generateUniqueLong());
+    public Branding addBranding(Long organizationId, String organizationName,
+                                String tagLine, String orgUrl,
+                                File logoFile, File splashFile, int splashTimeInSeconds) throws Exception {
 
-        var mUser = userService.createUser(organization.getAdminUser());
-        organization.setAdminUser(mUser);
-        sgelaFirestoreService.addDocument(organization);
+        Branding branding = new Branding();
+        branding.setOrganizationId(organizationId);
+        branding.setOrganizationName(organizationName);
+        branding.setId(Util.generateUniqueLong());
+        branding.setTagLine(tagLine);
+        branding.setOrganizationUrl(orgUrl);
+        branding.setSplashTimeInSeconds(splashTimeInSeconds);
+        String logoUrl = null;
+        if (logoFile != null) {
+            logoUrl = cloudStorageService.uploadFile(logoFile, branding.getId(), CloudStorageService.ORG_IMAGE_FILE);
+        }
+        String splashUrl = cloudStorageService.uploadFile(splashFile, branding.getId(), CloudStorageService.ORG_IMAGE_FILE);
 
-        var m = sgelaFirestoreService.getOrganization(organization.getId());
-        logger.info(mm+ "Organization: " + m.getName() + " added to database");
-        return m;    }
+        branding.setLogoUrl(logoUrl);
+        branding.setSplashUrl(splashUrl);
+        branding.setActiveFlag(true);
+        branding.setDate(new Date().toInstant().toString());
+
+        sgelaFirestoreService.addDocument(branding);
+
+        logger.info(mm + "Branding: " + G.toJson(branding) + " added to database");
+        return branding;
+    }
 
     public Organization updateOrganization(Organization organization) throws Exception {
         sgelaFirestoreService.updateDocument(Organization.class.getSimpleName(),

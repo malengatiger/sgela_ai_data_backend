@@ -1,13 +1,17 @@
 package com.boha.skunk.controllers;
 
+import com.boha.skunk.data.OrganizationSponsorPaymentType;
 import com.boha.skunk.data.Pricing;
+import com.boha.skunk.data.SponsorPaymentType;
 import com.boha.skunk.data.Subscription;
 import com.boha.skunk.services.SubscriptionService;
+import org.apache.http.HttpException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/subs")
@@ -49,7 +53,24 @@ public class SubscriptionController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
+    @PostMapping("/addSponsorPaymentType")
+    public ResponseEntity<String> addSponsorPaymentType(@RequestBody SponsorPaymentType type) throws HttpException {
+        try {
+            String result = subscriptionService.addSponsorPaymentType(type);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            throw new HttpException(e.getMessage());
+        }
+    }
+    @PostMapping("/addOrganizationSponsorPaymentType")
+    public ResponseEntity<String> addOrganizationSponsorPaymentType(@RequestBody OrganizationSponsorPaymentType type) throws HttpException {
+        try {
+            String result = subscriptionService.addOrganizationSponsorPaymentType(type);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            throw new HttpException(e.getMessage());
+        }
+    }
     @GetMapping("/getSubscriptions")
     public ResponseEntity<List<Subscription>> getSubscriptions(@RequestParam Long organizationId) {
         try {
