@@ -22,7 +22,7 @@ import java.net.ServerSocket;
 import java.net.UnknownHostException;
 import java.util.*;
 import java.util.logging.Logger;
-
+@SuppressWarnings("all")
 @SpringBootApplication
 public class SgelaAIDataBackEnd implements ApplicationListener<ApplicationReadyEvent> {
 	static final String mm = "\uD83E\uDD66\uD83E\uDD66\uD83E\uDD66 SgelaAIDataBackEnd \uD83E\uDD66";
@@ -73,6 +73,8 @@ public class SgelaAIDataBackEnd implements ApplicationListener<ApplicationReadyE
 	}
 	@Autowired
 	private Environment environment;
+// create test
+
 
 	@Override
 	public boolean supportsAsyncExecution() {

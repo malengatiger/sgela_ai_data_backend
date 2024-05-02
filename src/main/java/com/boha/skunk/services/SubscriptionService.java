@@ -4,7 +4,7 @@ package com.boha.skunk.services;
 import com.boha.skunk.data.OrganizationSponsorPaymentType;
 import com.boha.skunk.data.Pricing;
 import com.boha.skunk.data.SponsorPaymentType;
-import com.boha.skunk.data.Subscription;
+import com.boha.skunk.data.SgelaSubscription;
 import com.boha.skunk.util.Util;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +29,8 @@ public class SubscriptionService {
         return sgelaFirestoreService.getPricings(countryId);
     }
 
-    public String addSubscription(Subscription subscription) throws Exception {
-        return sgelaFirestoreService.addDocument(subscription);
+    public String addSubscription(SgelaSubscription sgelaSubscription) throws Exception {
+        return sgelaFirestoreService.addDocument(sgelaSubscription);
     }
     public String addSponsorPaymentType(SponsorPaymentType type) throws Exception {
         type.setDate(new Date().toInstant().toString());
@@ -41,7 +41,7 @@ public class SubscriptionService {
         type.setDate(new Date().toInstant().toString());
         return sgelaFirestoreService.addDocument(type);
     }
-    public List<Subscription> getSubscriptions(Long organizationId) throws Exception {
+    public List<SgelaSubscription> getSubscriptions(Long organizationId) throws Exception {
         return sgelaFirestoreService.getSubscriptions(organizationId);
     }
 
@@ -49,9 +49,9 @@ public class SubscriptionService {
         return sgelaFirestoreService.updateSubscription(organizationId, isActive);
     }
 
-    public Subscription addUserToSubscription(Long userId, Long subscriptionId) throws Exception {
+    public SgelaSubscription addUserToSubscription(Long userId, Long subscriptionId) throws Exception {
         int ok = sgelaFirestoreService.addUserToSubscription(userId, subscriptionId);
-        Subscription sub = null;
+        SgelaSubscription sub = null;
         if (ok == 0) {
             sub = sgelaFirestoreService.getSubscription(subscriptionId);
         }
@@ -59,11 +59,11 @@ public class SubscriptionService {
     }
 
     public boolean checkOrganizationSubscription(Long organizationId) throws Exception {
-        List<Subscription> list = sgelaFirestoreService.getSubscriptions(organizationId);
+        List<SgelaSubscription> list = sgelaFirestoreService.getSubscriptions(organizationId);
         if (list.isEmpty()) {
             return false;
         }
-        Subscription sub = list.get(list.size() - 1);
+        SgelaSubscription sub = list.get(list.size() - 1);
         return sub.isActiveFlag();
     }
 

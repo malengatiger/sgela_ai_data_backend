@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 @Service
+@SuppressWarnings("all")
 public class SgelaFirestoreService {
     static final String mm = "\uD83D\uDD35\uD83D\uDD35\uD83D\uDD35\uD83D\uDD35" +
             " SgelaFirestoreService \uD83C\uDF4E";
@@ -60,11 +61,11 @@ public class SgelaFirestoreService {
         return results;
     }
 
-    public List<String> addSubscriptions(List<Subscription> subscriptions) throws ExecutionException, InterruptedException {
+    public List<String> addSubscriptions(List<SgelaSubscription> sgelaSubscriptions) throws ExecutionException, InterruptedException {
         List<String> results = new ArrayList<>();
-        for (Subscription subscription : subscriptions) {
-            subscription.setId(subscription.getId());
-            String result = addDocument(subscription);
+        for (SgelaSubscription sgelaSubscription : sgelaSubscriptions) {
+            sgelaSubscription.setId(sgelaSubscription.getId());
+            String result = addDocument(sgelaSubscription);
             results.add(result);
         }
         return results;
@@ -93,9 +94,32 @@ public class SgelaFirestoreService {
     public List<String> addExamLinks(List<ExamLink> examLinks) throws ExecutionException, InterruptedException {
         List<String> results = new ArrayList<>();
         for (ExamLink examLink : examLinks) {
-            examLink.setId(examLink.getId());
             String result = addDocument(examLink);
             results.add(result);
+        }
+        return results;
+    }
+    public List<String> addExamPageContents(List<ExamPageContent> examPageContents) throws ExecutionException, InterruptedException {
+        List<String> results = new ArrayList<>();
+        CollectionReference collectionReference = firestore.collection("ExamPageContent");
+
+        for (ExamPageContent examLink : examPageContents) {
+            ApiFuture<DocumentReference> result = collectionReference.add(examLink);
+            DocumentReference documentReference = result.get();
+            results.add(documentReference.getPath());
+            logger.info("ExamPage added to Firestore: " + documentReference.getPath());
+        }
+        return results;
+    }
+    public List<String> addMathExamPageContents(List<ExamPageContent> examPageContents) throws ExecutionException, InterruptedException {
+        List<String> results = new ArrayList<>();
+        CollectionReference collectionReference = firestore.collection("MathExamPageContent");
+
+        for (ExamPageContent examLink : examPageContents) {
+            ApiFuture<DocumentReference> result = collectionReference.add(examLink);
+            DocumentReference documentReference = result.get();
+            results.add(documentReference.getPath());
+            logger.info("MathExamPage added to Firestore: " + documentReference.getPath());
         }
         return results;
     }
@@ -106,8 +130,8 @@ public class SgelaFirestoreService {
         ApiFuture<DocumentReference> result = collectionReference.add(data);
         DocumentReference documentReference = result.get();
 
-        logger.info(mm + "Firestore document added: " + name +
-                " \uD83D\uDC99\uD83D\uDC99 path: " + documentReference.getPath());
+//        logger.info(mm + "Firestore document added: " + name +
+//                " \uD83D\uDC99\uD83D\uDC99 path: " + documentReference.getPath());
         return documentReference.getId();
     }
 
@@ -183,11 +207,26 @@ public class SgelaFirestoreService {
             updateFuture.get(); // Wait for the update to complete
         }
     }
+    public void deleteDocumentsByProperty(String collectionName,
+                                          String propertyName,
+                                          Object propertyValue) throws Exception {
+        CollectionReference collectionRef = firestore.collection(collectionName);
+        Query query = collectionRef.whereEqualTo(propertyName, propertyValue);
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+        QuerySnapshot snapshot = querySnapshot.get();
+        logger.info(mm + collectionName + ": documents to be deleted: "+snapshot.getDocuments().size());
+
+        for (QueryDocumentSnapshot document : snapshot) {
+            DocumentReference documentRef = collectionRef.document(document.getId());
+            ApiFuture<WriteResult> apiFuture = documentRef.delete();
+            apiFuture.get(); // Wait for the update to complete
+        }
+    }
 
     public int updateSubscription(
             Long organizationId,
             boolean isActive) throws Exception {
-        CollectionReference collectionRef = firestore.collection(Subscription.class.getSimpleName());
+        CollectionReference collectionRef = firestore.collection(SgelaSubscription.class.getSimpleName());
         Query query = collectionRef.whereEqualTo("organizationId", organizationId);
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
         QuerySnapshot snapshot = querySnapshot.get();
@@ -240,7 +279,7 @@ public class SgelaFirestoreService {
         return docRef.get().getPath();
     }
     private int increaseSubscriptionUsers(Long subscriptionId) throws Exception {
-        CollectionReference collectionRef = firestore.collection(Subscription.class.getSimpleName());
+        CollectionReference collectionRef = firestore.collection(SgelaSubscription.class.getSimpleName());
         Query query = collectionRef.whereEqualTo("subscriptionId", subscriptionId);
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
         QuerySnapshot snapshot = querySnapshot.get();
@@ -372,6 +411,45 @@ public class SgelaFirestoreService {
         throw new Exception("City not found");
     }
 
+    public List<Subject> getSubjectsSorted() throws ExecutionException, InterruptedException {
+        CollectionReference collectionReference = firestore.collection("Subject");
+        Query query = collectionReference.orderBy("title");
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+        QuerySnapshot snapshot = querySnapshot.get();
+        var m = snapshot.getDocuments();
+        List<Subject>  subjects = new ArrayList<>();
+        for (QueryDocumentSnapshot snap : m) {
+            subjects.add(snap.toObject(Subject.class));
+        }
+        logger.info(mm + "getSubjectsSorted: documents found: " + subjects.size());
+        return subjects;
+    }
+
+    public int fixSubjectExamLinks() throws Exception {
+
+        var subjects = getSubjectsSorted();
+        try {
+            for (Subject subject : subjects) {
+                List<QueryDocumentSnapshot> queryDocumentSnapshotList =
+                        getDocumentsByNestedLongProperty(ExamLink.class.getSimpleName(),
+                                "subject.id", subject.getId());
+                for (QueryDocumentSnapshot snapshot : queryDocumentSnapshotList) {
+                    ExamLink examLink = snapshot.toObject(ExamLink.class);
+                    // Update the document in Firestore
+                    firestore.collection(ExamLink.class.getSimpleName())
+                            .document(snapshot.getId())
+                            .set(examLink)
+                            .get();
+                    logger.info( mm + "Subject:  \uD83D\uDC9C \uD83D\uDC9C \uD83D\uDC9C"
+                            + subject.getTitle() + " \uD83C\uDF4E fix completed!  \uD83D\uDC9C ");
+                }
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return 0;
+    }
     public List<ExamLink> getSubjectExamLinks(Long subjectId) throws ExecutionException, InterruptedException {
         List<QueryDocumentSnapshot> queryDocumentSnapshotList =
                 getDocumentsByNestedLongProperty(ExamLink.class.getSimpleName(),
@@ -379,6 +457,18 @@ public class SgelaFirestoreService {
         List<ExamLink> examLinks = new ArrayList<>();
         for (QueryDocumentSnapshot snapshot : queryDocumentSnapshotList) {
             ExamLink examLink = snapshot.toObject(ExamLink.class);
+            examLinks.add(examLink);
+        }
+
+        return examLinks;
+    }
+    public List<ExamPageContent> getExamLinkPageContents(Long examLinkId) throws ExecutionException, InterruptedException {
+        List<QueryDocumentSnapshot> queryDocumentSnapshotList =
+                getDocumentsByNestedLongProperty(ExamPageContent.class.getSimpleName(),
+                        "examLinkId", examLinkId);
+        List<ExamPageContent> examLinks = new ArrayList<>();
+        for (QueryDocumentSnapshot snapshot : queryDocumentSnapshotList) {
+            ExamPageContent examLink = snapshot.toObject(ExamPageContent.class);
             examLinks.add(examLink);
         }
 
@@ -406,22 +496,22 @@ public class SgelaFirestoreService {
         return geminiResponseRatings;
     }
 
-    public List<Subscription> getSubscriptions(Long organizationId) throws ExecutionException, InterruptedException {
+    public List<SgelaSubscription> getSubscriptions(Long organizationId) throws ExecutionException, InterruptedException {
         List<QueryDocumentSnapshot> queryDocumentSnapshotList =
-                getDocumentsByLongProperty(Subscription.class.getSimpleName(),
+                getDocumentsByLongProperty(SgelaSubscription.class.getSimpleName(),
                         "organizationId", organizationId, "date");
-        List<Subscription> subscriptions = new ArrayList<>();
+        List<SgelaSubscription> sgelaSubscriptions = new ArrayList<>();
         for (QueryDocumentSnapshot snapshot : queryDocumentSnapshotList) {
-            Subscription s = snapshot.toObject(Subscription.class);
-            subscriptions.add(s);
+            SgelaSubscription s = snapshot.toObject(SgelaSubscription.class);
+            sgelaSubscriptions.add(s);
         }
 
-        return subscriptions;
+        return sgelaSubscriptions;
     }
 
     public List<User> getOrganizationUsers(Long organizationId) throws ExecutionException, InterruptedException {
         List<QueryDocumentSnapshot> queryDocumentSnapshotList =
-                getDocumentsByLongProperty(Subscription.class.getSimpleName(),
+                getDocumentsByLongProperty(SgelaSubscription.class.getSimpleName(),
                         "organizationId", organizationId, "date");
         List<User> users = new ArrayList<>();
         for (QueryDocumentSnapshot snapshot : queryDocumentSnapshotList) {
@@ -446,20 +536,20 @@ public class SgelaFirestoreService {
     }
 
 
-    public Subscription getSubscription(Long subscriptionId) throws ExecutionException, InterruptedException {
+    public SgelaSubscription getSubscription(Long subscriptionId) throws ExecutionException, InterruptedException {
         List<QueryDocumentSnapshot> queryDocumentSnapshotList =
-                getDocumentsByLongProperty(Subscription.class.getSimpleName(),
+                getDocumentsByLongProperty(SgelaSubscription.class.getSimpleName(),
                         "id", subscriptionId, null);
-        List<Subscription> subscriptions = new ArrayList<>();
+        List<SgelaSubscription> sgelaSubscriptions = new ArrayList<>();
         for (QueryDocumentSnapshot snapshot : queryDocumentSnapshotList) {
-            Subscription s = snapshot.toObject(Subscription.class);
-            subscriptions.add(s);
+            SgelaSubscription s = snapshot.toObject(SgelaSubscription.class);
+            sgelaSubscriptions.add(s);
         }
 
-        if (subscriptions.isEmpty()) {
+        if (sgelaSubscriptions.isEmpty()) {
             return null;
         }
-        return subscriptions.get(0);
+        return sgelaSubscriptions.get(0);
     }
 
     public Organization getOrganization(Long organizationId) throws ExecutionException, InterruptedException {
@@ -476,10 +566,25 @@ public class SgelaFirestoreService {
         logger.info(mm + "getOrganization: documents found: " + m.size());
         return organization;
     }
+    public ExamLink getExamLink(Long examLinkId) throws ExecutionException, InterruptedException {
+
+        CollectionReference collectionReference = firestore.collection("ExamLink");
+        Query query = collectionReference.whereEqualTo("id", examLinkId);
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+        QuerySnapshot snapshot = querySnapshot.get();
+        var m = snapshot.getDocuments();
+        ExamLink examLink = null;
+        for (QueryDocumentSnapshot snap : m) {
+            examLink = snap.toObject(ExamLink.class);
+        }
+        logger.info(mm + "getExamLink: documents found: " + m.size());
+        logger.info(mm+"examLink found: \uD83C\uDF4E\uD83C\uDF4E " + G.toJson(examLink));
+        return examLink;
+    }
 
     public List<Pricing> getPricings(Long countryId) throws ExecutionException, InterruptedException {
         List<QueryDocumentSnapshot> queryDocumentSnapshotList =
-                getDocumentsByLongProperty(Subscription.class.getSimpleName(),
+                getDocumentsByLongProperty(SgelaSubscription.class.getSimpleName(),
                         "countryId", countryId, "date");
         List<Pricing> pricings = new ArrayList<>();
         for (QueryDocumentSnapshot snapshot : queryDocumentSnapshotList) {

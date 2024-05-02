@@ -22,11 +22,10 @@ public class UserService {
             "UserService \uD83D\uDD35";
     static final Logger logger = Logger.getLogger(UserService.class.getSimpleName());
     static final Gson G = new GsonBuilder().setPrettyPrinting().create();
-     final MailService mailService;
+//     final MailService mailService;
         final SgelaFirestoreService sgelaFirestoreService;
     final CloudStorageService cloudStorageService;
-    public UserService(MailService mailService, SgelaFirestoreService sgelaFirestoreService, CloudStorageService cloudStorageService) {
-        this.mailService = mailService;
+    public UserService(SgelaFirestoreService sgelaFirestoreService, CloudStorageService cloudStorageService) {
         this.sgelaFirestoreService = sgelaFirestoreService;
         this.cloudStorageService = cloudStorageService;
     }
@@ -56,7 +55,7 @@ public class UserService {
 
             logger.info("\uD83E\uDDE1\uD83E\uDDE1 sending email  .... ");
 
-            mailService.sendHtmlEmail(user.getEmail(), message, "Welcome to SgelaAI");
+//            mailService.sendHtmlEmail(user.getEmail(), message, "Welcome to SgelaAI");
             logger.info("\uD83E\uDDE1\uD83E\uDDE1 create user completed. ");
         } catch (Exception e) {
             e.printStackTrace();

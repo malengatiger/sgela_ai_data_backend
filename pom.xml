@@ -22,13 +22,22 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/repositories/releases/</url>
         </repository>
-        <repository>
-            <id>AsposeJavaAPI</id>
-            <name>Aspose Java API</name>
-            <url>https://repository.aspose.com/repo/</url>
-        </repository>
+
+
     </repositories>
     <dependencies>
+
+        <dependency>
+            <groupId>com.nfbsoftware</groupId>
+            <artifactId>latex-converter</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.de-swaef/Markdown2Pdf -->
+        <dependency>
+            <groupId>com.de-swaef</groupId>
+            <artifactId>Markdown2Pdf</artifactId>
+            <version>1.0.2</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -107,10 +116,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>google-cloud-aiplatform</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -127,8 +133,43 @@
             <artifactId>jsoup</artifactId>
             <version>1.16.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-core</artifactId>
+            <version>${itext.version}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.sf.cssbox/pdf2dom -->
+        <dependency>
+            <groupId>net.sf.cssbox</groupId>
+            <artifactId>pdf2dom</artifactId>
+            <version>2.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-vertexai</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-androidpublisher</artifactId>
+            <version>v3-rev20240222-2.0.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.vladsch.flexmark/flexmark-all -->
+<!--        <dependency>-->
+<!--            <groupId>com.vladsch.flexmark</groupId>-->
+<!--            <artifactId>flexmark-all</artifactId>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
-
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-aiplatform</artifactId>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -142,7 +183,7 @@
             <dependency>
                 <groupId>com.google.cloud</groupId>
                 <artifactId>libraries-bom</artifactId>
-                <version>26.29.0</version>
+                <version>  26.32.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

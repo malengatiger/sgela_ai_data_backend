@@ -3,7 +3,7 @@ package com.boha.skunk.data;
 
 
 //@Table(name = "subscriptions")
-public class Subscription {
+public class SgelaSubscription {
 
     private Long id;
     private Long organizationId;

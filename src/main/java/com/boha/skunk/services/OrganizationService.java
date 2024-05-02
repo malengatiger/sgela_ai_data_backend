@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 @Service
@@ -21,13 +20,12 @@ public class OrganizationService {
     static final Logger logger = Logger.getLogger(OrganizationService.class.getSimpleName());
     private final SgelaFirestoreService sgelaFirestoreService;
 
-    private final MailService mailService;
+//    private final MailService mailService;
     private final UserService userService;
     private final CloudStorageService cloudStorageService;
 
-    public OrganizationService(SgelaFirestoreService sgelaFirestoreService, MailService mailService, UserService userService, CloudStorageService cloudStorageService) {
+    public OrganizationService(SgelaFirestoreService sgelaFirestoreService, UserService userService, CloudStorageService cloudStorageService) {
         this.sgelaFirestoreService = sgelaFirestoreService;
-        this.mailService = mailService;
         this.userService = userService;
         this.cloudStorageService = cloudStorageService;
     }
@@ -59,15 +57,15 @@ public class OrganizationService {
         ps.setId(Util.generateUniqueLong());
         sgelaFirestoreService.addDocument(ps);
 
-        Subscription subscription = new Subscription();
-        subscription.setActiveFlag(true);
-        subscription.setCountryId(country.getId());
-        subscription.setDate(new Date().toInstant().toString());
-        subscription.setNumberOfUsers(0);
-        subscription.setOrganizationId(id);
-        subscription.setOrganizationName("SgelaAI Inc.");
-        subscription.setPricing(ps);
-        subscription.setId(Util.generateUniqueLong());
+        SgelaSubscription sgelaSubscription = new SgelaSubscription();
+        sgelaSubscription.setActiveFlag(true);
+        sgelaSubscription.setCountryId(country.getId());
+        sgelaSubscription.setDate(new Date().toInstant().toString());
+        sgelaSubscription.setNumberOfUsers(0);
+        sgelaSubscription.setOrganizationId(id);
+        sgelaSubscription.setOrganizationName("SgelaAI Inc.");
+        sgelaSubscription.setPricing(ps);
+        sgelaSubscription.setId(Util.generateUniqueLong());
 
 
         User user = new User();
@@ -80,7 +78,7 @@ public class OrganizationService {
         user.setActiveFlag(true);
         user.setDate(new Date().toInstant().toString());
         user.setSubscriptionDate(user.getDate());
-        user.setSubscriptionId(subscription.getId());
+        user.setSubscriptionId(sgelaSubscription.getId());
         user.setOrganizationId(id);
 
 
@@ -105,8 +103,8 @@ public class OrganizationService {
         organization.setAdminUser(mUser);
         sgelaFirestoreService.addDocument(organization);
 
-        subscription.setUser(mUser);
-        sgelaFirestoreService.addDocument(subscription);
+        sgelaSubscription.setUser(mUser);
+        sgelaFirestoreService.addDocument(sgelaSubscription);
 
         var m = sgelaFirestoreService.getOrganization(organization.getId());
         logger.info(mm + "Organization: " + m.getName() + " added to database");
@@ -140,9 +138,20 @@ public class OrganizationService {
         }
     }
 
+    public Branding addBrandingFromPrevious(Branding branding) throws Exception {
+
+
+        branding.setId(Util.generateUniqueLong());
+        branding.setActiveFlag(true);
+        branding.setDate(new Date().toInstant().toString());
+
+        sgelaFirestoreService.addDocument(branding);
+        logger.info(mm + "Branding: " + G.toJson(branding) + " added to database");
+        return branding;
+    }
     public Branding addBranding(Long organizationId, String organizationName,
                                 String tagLine, String orgUrl,
-                                File logoFile, File splashFile, int splashTimeInSeconds) throws Exception {
+                                File logoFile, File splashFile, int splashTimeInSeconds, int colorIndex) throws Exception {
 
         Branding branding = new Branding();
         branding.setOrganizationId(organizationId);
@@ -151,6 +160,7 @@ public class OrganizationService {
         branding.setTagLine(tagLine);
         branding.setOrganizationUrl(orgUrl);
         branding.setSplashTimeInSeconds(splashTimeInSeconds);
+        branding.setColorIndex(colorIndex);
         String logoUrl = null;
         if (logoFile != null) {
             logoUrl = cloudStorageService.uploadFile(logoFile, branding.getId(), CloudStorageService.ORG_IMAGE_FILE);

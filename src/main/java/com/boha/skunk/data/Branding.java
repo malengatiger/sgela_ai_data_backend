@@ -12,8 +12,17 @@ public class Branding {
     String organizationUrl;
     boolean activeFlag;
     int splashTimeInSeconds;
+    int colorIndex;
 
     public Branding() {
+    }
+
+    public int getColorIndex() {
+        return colorIndex;
+    }
+
+    public void setColorIndex(int colorIndex) {
+        this.colorIndex = colorIndex;
     }
 
     public int getSplashTimeInSeconds() {

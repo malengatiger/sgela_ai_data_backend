@@ -97,6 +97,7 @@ public class OrganizationController {
                                                             @RequestParam("organizationName") String organizationName,
                                                             @RequestParam("tagLine") String tagLine,
                                                             @RequestParam("orgUrl") String orgUrl,
+                                                            @RequestParam("colorIndex") int colorIndex,
                                                             @RequestParam("splashTimeInSeconds") int splashTimeInSeconds,
                                                             @RequestParam("splashFile") MultipartFile splashFile) {
         try {
@@ -110,7 +111,7 @@ public class OrganizationController {
             // Call the service method to addBranding
             Branding createdBranding = organizationService.addBranding(
                     organizationId, organizationName, tagLine, orgUrl,
-                    null, convertedSplashFile, splashTimeInSeconds);
+                    null, convertedSplashFile, splashTimeInSeconds,colorIndex);
 
             // Return a success response
             return ResponseEntity.ok(createdBranding);
@@ -131,7 +132,7 @@ public class OrganizationController {
                                                          @RequestParam("tagLine") String tagLine,
                                                          @RequestParam("orgUrl") String orgUrl,
                                                          @RequestParam("splashTimeInSeconds") int splashTimeInSeconds,
-
+                                                         @RequestParam("colorIndex") int colorIndex,
                                                          @RequestParam("logoFile") MultipartFile logoFile,
                                                          @RequestParam("splashFile") MultipartFile splashFile) {
         try {
@@ -150,7 +151,7 @@ public class OrganizationController {
             // Call the service method to addBranding
             Branding createdBranding = organizationService.addBranding(
                     organizationId, organizationName, tagLine, orgUrl,
-                    convertedLogoFile, convertedSplashFile, splashTimeInSeconds);
+                    convertedLogoFile, convertedSplashFile, splashTimeInSeconds,colorIndex);
 
             // Return a success response
             return ResponseEntity.ok(createdBranding);
@@ -159,6 +160,21 @@ public class OrganizationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to upload branding: " + e.getMessage());
         } catch (Exception e) {
+            logger.severe("Failed to upload branding.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to upload branding: " + e.getMessage());
+        }
+    }
+    @PostMapping("/uploadBrandingWithNoFiles")
+    public ResponseEntity<Object> uploadBrandingWithNoFiles(
+                                                         @RequestBody() Branding branding) {
+        try {
+            logger.info(mm + "Branding: " + branding.getOrganizationName() + " to be processed .....");
+            // Call the service method to addBranding
+            Branding createdBranding = organizationService.addBrandingFromPrevious(branding);
+            // Return a success response
+            return ResponseEntity.ok(createdBranding);
+        }  catch (Exception e) {
             logger.severe("Failed to upload branding.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to upload branding: " + e.getMessage());

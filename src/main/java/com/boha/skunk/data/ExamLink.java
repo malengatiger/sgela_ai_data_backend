@@ -1,10 +1,6 @@
 package com.boha.skunk.data;
 
 
-
-import java.util.List;
-
-
 //@Table(name = "exam_links")
 public class ExamLink {
     
@@ -19,11 +15,6 @@ public class ExamLink {
     //(name = "subject_id")
     private Subject subject;
 
-
-   //@Column(name = "exam_text", columnDefinition = "TEXT")
-
-    private String examText;
-
    //@Column(name = "link", columnDefinition = "TEXT")
     private String link;
 
@@ -32,32 +23,32 @@ public class ExamLink {
 
    //@Column(name = "document_title")
     private String documentTitle;
+    private String zippedPaperUrl;
 
-   //@Column(name = "page_image_zip_url", columnDefinition = "TEXT")
-    private String pageImageZipUrl;
+    public String getZippedPaperUrl() {
+        return zippedPaperUrl;
+    }
+
+    public void setZippedPaperUrl(String zippedPaperUrl) {
+        this.zippedPaperUrl = zippedPaperUrl;
+    }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getExamText() {
-        return examText;
-    }
-
-    public void setExamText(String examText) {
-        this.examText = examText;
     }
 
     public ExamLink() {
     }
 // Constructors, getters, and setters...
 
-    public String getPageImageZipUrl() {
-        return pageImageZipUrl;
-    }
-
-    public void setPageImageZipUrl(String pageImageZipUrl) {
-        this.pageImageZipUrl = pageImageZipUrl;
+    public ExamLink(Long id, ExamDocument examDocument, Subject subject, String link, String title, String documentTitle, String zippedPaperUrl) {
+        this.id = id;
+        this.examDocument = examDocument;
+        this.subject = subject;
+        this.link = link;
+        this.title = title;
+        this.documentTitle = documentTitle;
+        this.zippedPaperUrl = zippedPaperUrl;
     }
 
     public String getLink() {

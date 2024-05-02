@@ -7,7 +7,7 @@ import java.util.List;
 
 //@Table(name = "subjects")
 
-public class Subject {
+public class Subject implements Comparable<Subject>{
     
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -44,5 +44,10 @@ public class Subject {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public int compareTo(Subject o) {
+        return this.title.compareTo(o.title);
     }
 }

@@ -12,16 +12,20 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.logging.Logger;
 
 @Component
 public class OKHelper {
     private final OkHttpClient client;
+    static final String mm = "\uD83E\uDD66\uD83E\uDD66\uD83E\uDD66 OKHelper  \uD83D\uDC9B";
+    static final Logger logger = Logger.getLogger(OKHelper.class.getSimpleName());
 
     public OKHelper() {
         this.client = new OkHttpClient.Builder()
                 .sslSocketFactory(createTrustAllSSLSocketFactory(), createTrustAllTrustManager())
                 .hostnameVerifier(OkHostnameVerifier.INSTANCE)
                 .build();
+        logger.info(mm+ " OkHttpClient constructed: " + this.client.toString());
     }
 
     public OkHttpClient getClient() {
@@ -46,7 +50,7 @@ public class OKHelper {
 
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-
+            logger.info(mm+" SSL SocketFactory constructed" );
             return sslContext.getSocketFactory();
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
             throw new RuntimeException("Failed to create TrustAllSSLSocketFactory", e);

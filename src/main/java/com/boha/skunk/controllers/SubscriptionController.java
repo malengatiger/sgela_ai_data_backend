@@ -2,26 +2,34 @@ package com.boha.skunk.controllers;
 
 import com.boha.skunk.data.OrganizationSponsorPaymentType;
 import com.boha.skunk.data.Pricing;
+import com.boha.skunk.data.SgelaSubscription;
 import com.boha.skunk.data.SponsorPaymentType;
-import com.boha.skunk.data.Subscription;
+import com.boha.skunk.services.GooglePlayAPIService;
 import com.boha.skunk.services.SubscriptionService;
 import org.apache.http.HttpException;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/subs")
 //@RequiredArgsConstructor
 public class SubscriptionController {
 
+    private final String policy = "https://www.google.com/policies/privacy/";
     private final SubscriptionService subscriptionService;
+    private final GooglePlayAPIService googlePlayAPIService;
 
-    public SubscriptionController(SubscriptionService subscriptionService) {
+    public SubscriptionController(SubscriptionService subscriptionService, GooglePlayAPIService googlePlayAPIService) {
         this.subscriptionService = subscriptionService;
+        this.googlePlayAPIService = googlePlayAPIService;
     }
 
     @PostMapping("/addPricing")
@@ -44,15 +52,36 @@ public class SubscriptionController {
         }
     }
 
-    @PostMapping("/addSubscription")
-    public ResponseEntity<String> addSubscription(@RequestBody Subscription subscription) {
+    @GetMapping("/privacyPolicy")
+    public ResponseEntity<FileSystemResource> privacyPolicy() {
         try {
-            String result = subscriptionService.addSubscription(subscription);
+            File file = new ClassPathResource("privacy.txt").getFile();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.TEXT_PLAIN);
+            headers.setContentDispositionFormData("attachment", "privacy.txt");
+
+            FileSystemResource resource = new FileSystemResource(file);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(resource);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+    @PostMapping("/addSgelaSubscription")
+    public ResponseEntity<String> addSubscription(@RequestBody SgelaSubscription sgelaSubscription) {
+        try {
+            String result = subscriptionService.addSubscription(sgelaSubscription);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
     @PostMapping("/addSponsorPaymentType")
     public ResponseEntity<String> addSponsorPaymentType(@RequestBody SponsorPaymentType type) throws HttpException {
         try {
@@ -62,6 +91,7 @@ public class SubscriptionController {
             throw new HttpException(e.getMessage());
         }
     }
+
     @PostMapping("/addOrganizationSponsorPaymentType")
     public ResponseEntity<String> addOrganizationSponsorPaymentType(@RequestBody OrganizationSponsorPaymentType type) throws HttpException {
         try {
@@ -71,21 +101,22 @@ public class SubscriptionController {
             throw new HttpException(e.getMessage());
         }
     }
+
     @GetMapping("/getSubscriptions")
-    public ResponseEntity<List<Subscription>> getSubscriptions(@RequestParam Long organizationId) {
+    public ResponseEntity<List<SgelaSubscription>> getSubscriptions(@RequestParam Long organizationId) {
         try {
-            List<Subscription> subscriptions = subscriptionService.getSubscriptions(organizationId);
-            return ResponseEntity.ok(subscriptions);
+            List<SgelaSubscription> sgelaSubscriptions = subscriptionService.getSubscriptions(organizationId);
+            return ResponseEntity.ok(sgelaSubscriptions);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
-    @GetMapping("/updateSubscription")
-    public ResponseEntity<Integer> updateSubscription(@RequestParam Long organizationId,
-                                                      @RequestParam boolean isActive) {
+
+    @GetMapping("/createSubscription")
+    public ResponseEntity<Object> createSubscription() {
         try {
-            int result = subscriptionService.updateSubscription(organizationId, isActive);
+            var result = googlePlayAPIService.createSubscription();
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -93,10 +124,10 @@ public class SubscriptionController {
     }
 
     @GetMapping("/addUserToSubscription")
-    public ResponseEntity<Subscription> addUserToSubscription(@RequestParam Long userId,
-                                                              @RequestParam Long subscriptionId) {
+    public ResponseEntity<SgelaSubscription> addUserToSubscription(@RequestParam Long userId,
+                                                                   @RequestParam Long subscriptionId) {
         try {
-            Subscription result = subscriptionService.addUserToSubscription(userId, subscriptionId);
+            SgelaSubscription result = subscriptionService.addUserToSubscription(userId, subscriptionId);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

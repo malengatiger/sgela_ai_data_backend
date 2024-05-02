@@ -7,10 +7,16 @@ import com.google.gson.GsonBuilder;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,6 +25,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 @Service
+@SuppressWarnings({"all"})
+
 public class CloudStorageService {
 
     private final Storage storage;
@@ -46,11 +54,13 @@ public class CloudStorageService {
     @Value("${cloudStorageDirectory}")
     private String cloudStorageDirectory;
 
-    public File downloadFile(String url) throws Exception {
+
+    public File downloadFile(String url) throws IOException {
         File dir = DirectoryUtils.createDirectoryIfNotExists("pdfs");
         String path = dir.getPath() + "/images_"
                 + System.currentTimeMillis() + ".zip";
         File file = new File(path);
+        var mUrl = URLEncoder.encode(url, StandardCharsets.UTF_8);
         FileUtils.copyURLToFile(new URL(url),
                 file);
 
@@ -62,64 +72,44 @@ public class CloudStorageService {
     static final int EXAM_FILE = 0;
     static final int ANSWER_FILE = 1;
     static final int ORG_IMAGE_FILE = 2;
+    static final int ORG_ZIP_FILE = 3;
+
 
 
     private String getFileExtension(String fileName) {
-        logger.info(mm+"getFileExtension: fileName: "+fileName);
+        logger.info(mm + "getFileExtension: fileName: " + fileName);
         int dotIndex = fileName.lastIndexOf(".");
         if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
             var ext = fileName.substring(dotIndex + 1).toLowerCase();
-            logger.info(mm+"getFileExtension: ext: "+ext);
+            logger.info(mm + "getFileExtension: ext: " + ext);
             return ext;
         }
         return "";
     }
 
-    public String uploadFile(File file, Long id, int type) throws IOException {
-        File dir = DirectoryUtils.createDirectoryIfNotExists("cloudstorage");
-        File mFile = copyAndDeleteFile(file,
-                new File(dir.getPath() + "/file_" + id
-                        + "_" + System.currentTimeMillis()
-                        + "."
-                        + getFileExtension(file.getName())));
-        String path;
-        switch (type) {
-            case EXAM_FILE -> path = dir.getPath() + "/sgelaAI_examLink_";
-            case ANSWER_FILE -> path = dir.getPath() + "/sgelaAI_answerLink_";
-            case ORG_IMAGE_FILE -> path = dir.getPath() + "/sgelaAI_orgImage_";
-            default ->  path = dir.getPath() + "/sgelaAI_generic";
-            
-        }
-       
+    public static String directory = "cloudstorage";
+    public String uploadFile(File mFile, Long id, int type) throws IOException {
+        File dir = DirectoryUtils.createDirectoryIfNotExists(directory);
         logger.info(mm +
-                " ............. uploadFile to cloud storage: " + path + "/" + mFile.getName());
+                " ............. uploadFile to cloud storage: " + mFile.getName());
         String contentType = Files.probeContentType(mFile.toPath());
         BlobId blobId = BlobId.of(bucketName, cloudStorageDirectory
-                + path + id + "_" + System.currentTimeMillis() + "."
+                + mFile.getPath() + id + "_" + System.currentTimeMillis() + "."
                 + getFileExtension(mFile.getName()));
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
                 .setContentType(contentType)
                 .build();
 
-
         Blob blob = storage.createFrom(blobInfo, Paths.get(mFile.getPath()));
 
         // Generate a signed URL for the blob with no permissions required
         String downloadUrl = String.valueOf(blob.signUrl(3650, TimeUnit.DAYS, Storage.SignUrlOption.withV2Signature()));
-        Files.delete(mFile.toPath());
+        logger.info(mm +
+                " file uploaded to cloud storage, path: " + mFile.getAbsolutePath() + " size: " + mFile.length());
         logger.info(mm +
                 " file uploaded to cloud storage, type: " + type + " \n" + downloadUrl);
         return downloadUrl;
     }
 
-    public File copyAndDeleteFile(File sourceFile, File destinationFile) throws IOException {
-        // Copy the file to the destination location
-        Path sourcePath = sourceFile.toPath();
-        Path destinationPath = destinationFile.toPath();
-        Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
 
-        // Delete the original file
-        Files.delete(sourcePath);
-        return destinationFile;
-    }
 }
