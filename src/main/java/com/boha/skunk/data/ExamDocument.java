@@ -15,12 +15,24 @@ public class ExamDocument {
    //@Column(name = "link", columnDefinition = "TEXT")
     String link;
 
+    int year;
+
     public ExamDocument() {
     }
 
-    public ExamDocument(String title, String link) {
+    public ExamDocument(Long id, String title, String link, int year) {
+        this.id = id;
         this.title = title;
         this.link = link;
+        this.year = year;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public Long getId() {

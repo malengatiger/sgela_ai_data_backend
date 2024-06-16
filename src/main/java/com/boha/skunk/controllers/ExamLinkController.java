@@ -2,6 +2,7 @@ package com.boha.skunk.controllers;
 
 import com.boha.skunk.data.*;
 import com.boha.skunk.services.ExamLinkService;
+import com.boha.skunk.services.LinkExtractorService;
 import com.boha.skunk.services.SgelaFirestoreService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/links")
-//@RequiredArgsConstructor
+@SuppressWarnings("all")
 public class ExamLinkController {
     static final String mm = " \uD83C\uDF4E \uD83C\uDF4E \uD83C\uDF4E " +
             "ExamLinkController  \uD83C\uDF4E";
@@ -27,27 +28,40 @@ public class ExamLinkController {
 
     private final ExamLinkService examLinkService;
     private final SgelaFirestoreService sgelaFirestoreService;
+    private final LinkExtractorService linkExtractorService;
 
-    public ExamLinkController(ExamLinkService examLinkService, SgelaFirestoreService sgelaFirestoreService) {
+
+    public ExamLinkController(ExamLinkService examLinkService,
+                              SgelaFirestoreService sgelaFirestoreService, LinkExtractorService linkExtractorService) {
         this.examLinkService = examLinkService;
         this.sgelaFirestoreService = sgelaFirestoreService;
+        this.linkExtractorService = linkExtractorService;
     }
 
     @GetMapping("/")
-    public ResponseEntity<String> hello(){
+    public ResponseEntity<String> hello() {
         logger.info(mm + "say hello! ..... ");
         return ResponseEntity.ok(
                 "<h1>Sgela AI Backend</h1><p>The SgelaAI Backend to manage data</p>");
     }
 
-        @GetMapping("/getSubjects")
-    public ResponseEntity<List<Subject>> getSubjects() throws Exception{
+    @GetMapping("/getSubjects")
+    public ResponseEntity<List<Subject>> getSubjects() throws Exception {
         logger.info(mm + "find all subjects ..... ");
 
 //        var list = examLinkService.getSubjects();
         var list = sgelaFirestoreService.getSubjects();
         logger.info(mm + "subjects found: " + list.size());
         return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("/downloadExamDocuments")
+    public ResponseEntity<List<SubjectExamInterfaceBag>> downloadExamDocuments() throws Exception {
+        logger.info(mm + "downloadExamDocuments ..... ");
+        var bag = linkExtractorService.downloadExamDocuments();
+
+        logger.info(mm + "downloadExamDocuments SubjectExamInterfaceBags found: " + bag.size());
+        return ResponseEntity.ok().body(bag);
     }
 
     @PostMapping("/addResponseRating")
@@ -71,8 +85,9 @@ public class ExamLinkController {
         logger.info(mm + "response ratings found: " + list.size());
         return ResponseEntity.ok().body(list);
     }
+
     @GetMapping("/getExamDocuments")
-    public ResponseEntity<List<ExamDocument>> getExamDocuments() throws Exception{
+    public ResponseEntity<List<ExamDocument>> getExamDocuments() throws Exception {
 
 //        var list = examLinkService.getExamDocuments();
         var list = sgelaFirestoreService
@@ -81,10 +96,9 @@ public class ExamLinkController {
     }
 
     @GetMapping("/getSubjectExamLinks")
-    public ResponseEntity<List<ExamLink>> getSubjectExamLinks(@RequestParam Long subjectId) throws Exception{
+    public ResponseEntity<List<ExamLink>> getSubjectExamLinks(@RequestParam Long subjectId) throws Exception {
 
-//        var list = examLinkService.getSubjectExamLinks(subjectId);
-        var list = sgelaFirestoreService.getSubjectExamLinks(subjectId);
+        var list = examLinkService.getSubjectExamLinks(subjectId);
         logger.info(mm + "exam links found: " + list.size());
 
         return ResponseEntity.ok().body(list);

@@ -1,13 +1,10 @@
 package com.boha.skunk.services;
 
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.internal.tls.OkHostnameVerifier;
 import org.springframework.stereotype.Component;
 
 import javax.net.ssl.*;
-import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -15,6 +12,7 @@ import java.security.cert.X509Certificate;
 import java.util.logging.Logger;
 
 @Component
+@SuppressWarnings("all")
 public class OKHelper {
     private final OkHttpClient client;
     static final String mm = "\uD83E\uDD66\uD83E\uDD66\uD83E\uDD66 OKHelper  \uD83D\uDC9B";

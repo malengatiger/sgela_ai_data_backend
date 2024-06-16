@@ -9,16 +9,18 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 @Service
+@SuppressWarnings("all")
 //@RequiredArgsConstructor
 public class ExamLinkService {
 
 
-    private final CloudStorageService cloudStorageService;
+    
     static final String mm = "\uD83C\uDF3F\uD83C\uDF3F\uD83C\uDF3F ExamLinkService \uD83E\uDD43";
 
     static final Logger logger = Logger.getLogger(ExamLinkService.class.getSimpleName());
@@ -29,7 +31,7 @@ public class ExamLinkService {
     private final SgelaFirestoreService firestoreService;
 
     public ExamLinkService(CloudStorageService cloudStorageService, SgelaFirestoreService firestoreService) {
-        this.cloudStorageService = cloudStorageService;
+        CloudStorageService valueFormerlyAssignedToCloudStorageService1 = cloudStorageService;
         this.firestoreService = firestoreService;
     }
 
@@ -68,18 +70,18 @@ public class ExamLinkService {
         return extractedFiles;
     }
 
-    public List<ExamLink> getSubjectExamLinks(Long subjectId) throws Exception {
+    public List<ExamLink> getSubjectExamLinks(Long subjectId) throws ExecutionException, InterruptedException  {
 
         return firestoreService.getSubjectExamLinks(subjectId);
     }
 
 
-    public List<Subject> getSubjects() throws Exception {
+    public List<Subject> getSubjects() throws ExecutionException, InterruptedException {
         logger.info(mm + " ... getSubjects ...");
         return firestoreService.getSubjects();
     }
 
-    public List<GeminiResponseRating> getExamRatings(Long examLinkId) throws Exception {
+    public List<GeminiResponseRating> getExamRatings(Long examLinkId) throws ExecutionException, InterruptedException  {
 
         List<GeminiResponseRating> ratings = firestoreService.getResponseRatings(examLinkId);
 
@@ -88,7 +90,7 @@ public class ExamLinkService {
     }
 
 
-    public List<String> addResponseRating(GeminiResponseRating responseRating) throws Exception {
+    public List<String> addResponseRating(GeminiResponseRating responseRating) throws ExecutionException, InterruptedException  {
         logger.info(mm+"adding rating: " + G.toJson(responseRating));
         List<GeminiResponseRating> ratings = new ArrayList<>();
         ratings.add(responseRating);

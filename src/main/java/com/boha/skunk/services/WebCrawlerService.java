@@ -6,23 +6,25 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service
 public class WebCrawlerService {
     static final String mm = "\uD83C\uDF0D\uD83C\uDF0D\uD83C\uDF0D\uD83C\uDF0D " +
             "WebCrawlerService \uD83D\uDD35";
-    static final Logger logger = Logger.getLogger(WebCrawlerService.class.getSimpleName());
+    static final Logger logger = LoggerFactory.getLogger(WebCrawlerService.class);
     static final Gson G = new GsonBuilder().setPrettyPrinting().create();
 
     public List<TitleLinkPair> crawlWebPage(String url) {
         List<TitleLinkPair> titleLinkPairs = new ArrayList<>();
-        logger.info(mm + " ... crawl web page: " + url);
+        String mUrl = mm + " ... crawl web page: " + url;
+        logger.info(mUrl);
         try {
             Document document = Jsoup.connect(url).get();
             Elements elements2 = document.select("a.elementor-button.elementor-button-link.elementor-size-lg[href]");

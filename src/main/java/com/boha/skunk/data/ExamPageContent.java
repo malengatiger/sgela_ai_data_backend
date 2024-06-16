@@ -2,14 +2,18 @@ package com.boha.skunk.data;
 
 public class ExamPageContent {
     private Long examLinkId;
+    private Long answerLinkId;
     private Long id;
-    private boolean hasImages;
-    private String text;
     private int pageIndex;
     private String pageImageUrl;
     private String title;
 
-    public ExamPageContent() {
+    public Long getAnswerLinkId() {
+        return answerLinkId;
+    }
+
+    public void setAnswerLinkId(Long answerLinkId) {
+        this.answerLinkId = answerLinkId;
     }
 
     public Long getExamLinkId() {
@@ -36,21 +40,6 @@ public class ExamPageContent {
         this.id = id;
     }
 
-    public boolean isHasImages() {
-        return hasImages;
-    }
-
-    public void setHasImages(boolean hasImages) {
-        this.hasImages = hasImages;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 
     public int getPageIndex() {
         return pageIndex;

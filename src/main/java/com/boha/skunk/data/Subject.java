@@ -1,7 +1,5 @@
 package com.boha.skunk.data;
 
-import lombok.Data;
-
 import java.util.List;
 
 

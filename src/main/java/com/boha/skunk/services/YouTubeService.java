@@ -12,7 +12,6 @@ import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+@SuppressWarnings("all")
 @Service
 public class YouTubeService {
 

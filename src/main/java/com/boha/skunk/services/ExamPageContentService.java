@@ -1,18 +1,13 @@
 package com.boha.skunk.services;
 
-import com.boha.skunk.data.ExamLink;
-import com.boha.skunk.data.ExamPageContent;
-import com.boha.skunk.data.PdfImageDetector;
-import com.boha.skunk.data.Subject;
+import com.boha.skunk.data.*;
 import com.boha.skunk.util.DirectoryUtils;
 import com.boha.skunk.util.TrustAllCertificates;
 import com.boha.skunk.util.Util;
 import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
+import lombok.NonNull;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -46,9 +41,17 @@ import static com.boha.skunk.services.CloudStorageService.ORG_IMAGE_FILE;
 import static com.boha.skunk.services.CloudStorageService.ORG_ZIP_FILE;
 
 @Service
-@RequiredArgsConstructor
-@SuppressWarnings({"all"})
+//@RequiredArgsConstructor
+@SuppressWarnings("all")
 public class ExamPageContentService {
+    public ExamPageContentService(SgelaFirestoreService sgelaFirestoreService, CloudStorageService cloudStorageService, DocumentProcessor documentProcessor, OKHelper okHelper, PdfImageDetector pdfImageDetector) {
+        this.sgelaFirestoreService = sgelaFirestoreService;
+        this.cloudStorageService = cloudStorageService;
+        this.documentProcessor = documentProcessor;
+        this.okHelper = okHelper;
+        this.pdfImageDetector = pdfImageDetector;
+    }
+
     @PostConstruct
     public void initialize() {
         try {
@@ -81,16 +84,23 @@ public class ExamPageContentService {
         logger.info(mm + "SSL certificates disabled");
     }
 
+    @NonNull
     final SgelaFirestoreService sgelaFirestoreService;
+    @NonNull
     final CloudStorageService cloudStorageService;
+    @NonNull
     final DocumentProcessor documentProcessor;
 
+    @NonNull
     private final OKHelper okHelper;
+    @NonNull
     private final PdfImageDetector pdfImageDetector;
+
+
     static final String mm = "\uD83E\uDD66\uD83E\uDD66\uD83E\uDD66 ExamPageContentService  \uD83D\uDC9B";
     static final Logger logger = LoggerFactory.getLogger(ExamPageContentService.class.getSimpleName());
 
-    public byte[] convertFileToByteArray(File file) throws IOException {
+    private byte[] convertFileToByteArray(File file) throws IOException {
         try (FileInputStream fis = new FileInputStream(file);
              ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[1024];
@@ -104,7 +114,6 @@ public class ExamPageContentService {
 
     private static final String ERROR_PREFIX = "ERROR: ";
 
-    @SuppressWarnings({"all"})
     public List<ExamPageContent> extractMathPageContent() throws Exception {
         logger.info(mm + "extractSubjectPageContent");
         List<Subject> subjects = sgelaFirestoreService.getSubjects();
@@ -156,7 +165,7 @@ public class ExamPageContentService {
 
     private List<ExamPageContent> extractPageContentFromPdf(ExamLink examLink, File pdfFile) throws Exception {
         logger.info(mm + "extractPageContentFromPdf: title: " + examLink.getTitle());
-        Subject subject = examLink.getSubject();
+//        Subject subject = examLink.getSubject();
         PdfReader reader = new PdfReader(pdfFile.getAbsolutePath());
         PdfDocument pdfDoc = new PdfDocument(reader);
         PDDocument pdDocument = Loader.loadPDF(pdfFile);
@@ -171,9 +180,7 @@ public class ExamPageContentService {
                 examPageContent.setExamLinkId(examLink.getId());
                 examPageContent.setPageIndex(i);
                 boolean hasImages = pdfImageDetector.hasImage(page);
-                examPageContent.setHasImages(hasImages);
                 getImageAndUpload(examLink, pdfRenderer, i, examPageContent);
-                getText(pdfDoc, i, examPageContent);
                 examPageContents.add(examPageContent);
                 i++;
             } catch (Exception e) {
@@ -186,24 +193,13 @@ public class ExamPageContentService {
         logger.info(mm + "extractPageContentFromPdf: Firestore MathExamPageContent documents added: " + mList.size() +
                 " \uD83D\uDC99\uD83D\uDC99 ");
         logger.info(mm + "extractPageContentFromPdf: examPageContents created, \uD83C\uDF4E subject: "
-                + subject.getTitle() + " \uD83C\uDF4E "
                 + examPageContents.size() + " examPageContents \uD83C\uDF4E for examLink: "
                 + examLink.getDocumentTitle()
                 + " " + examLink.getTitle());
         return examPageContents;
     }
 
-    private static void getText(PdfDocument pdfDoc, int i, ExamPageContent examPageContent) {
-        try {
-            PdfPage pdfPage = pdfDoc.getPage(i + 1);
-            var text = PdfTextExtractor.getTextFromPage(pdfPage);
-            examPageContent.setText(text.trim());
-        } catch (Exception e) {
-            logger.info(mm + " getText: " + e.getMessage());
-        }
-    }
-
-    private void getImageAndUpload(ExamLink examLink, PDFRenderer pdfRenderer, int index,
+    private void getImageAndUpload(Exam examLink, PDFRenderer pdfRenderer, int index,
                                    ExamPageContent examPageContent) throws IOException {
         File imageFile = null;
         imageFile = convertPdfPageToImage(pdfRenderer, index);
@@ -211,13 +207,9 @@ public class ExamPageContentService {
             String url = cloudStorageService.uploadFile(
                     imageFile, examLink.getId(), ORG_IMAGE_FILE);
             examPageContent.setPageImageUrl(url);
-            examPageContent.setHasImages(true);
             logger.info(mm + "getImageAndUpload completed!  ...... "
                     + vv + vv + imageFile.length() + " bytes uploaded");
-        } else {
-            examPageContent.setHasImages(false);
         }
-
     }
 
     List<File> filesToBeZipped = new ArrayList<>();
@@ -240,10 +232,7 @@ public class ExamPageContentService {
             var url = cloudStorageService.uploadFile(zipFile, examLink.getId(), ORG_ZIP_FILE);
             examLink.setZippedPaperUrl(url);
             logger.info(mm + "ExamLink Zipped file uploaded: " + url);
-            sgelaFirestoreService.updateDocumentsByProperty(
-                    "ExamLink", "examLinkId", examLink.getId(),
-                    Util.objectToMap((examLink)));
-            logger.info(mm + "ExamLink updated with zip url: " + examLink.getZippedPaperUrl());
+            sgelaFirestoreService.updateExamLink(examLink);
         } catch (Exception e) {
             logger.info(mm + "ERROR: Failed to update  \uD83D\uDC7F " + examLink.getZippedPaperUrl());
             throw new RuntimeException(e);
@@ -329,30 +318,22 @@ public class ExamPageContentService {
 //        Subject subject = link.getSubject();
 
         List<ExamPageContent> mList = null;
-        try {
-            File file = downloadPdf(link.getLink());
-            mList = extractPageContentFromPdf(link, file);
-//            logger.info(mm + "  \uD83E\uDD66 " + mList.size()
-//                    + " ExamPageContents created for  \uD83E\uDD66 "
-//                    + subject.getTitle() + "  \uD83E\uDD66 "
-//                    + link.getDocumentTitle() + " - " + link.getTitle());
-        } catch (Exception e) {
-            logger.info(mm + "extractPageContentForExam: " + e.getMessage());
 
-        }
+        File file = downloadPdf(link.getLink());
+        mList = extractPageContentFromPdf(link, file);
 
         return mList;
     }
-
-    private List<ExamLink> getExamLinks() throws Exception {
-        List<ExamLink> examLinks = new ArrayList<>();
-        List<Subject> subjects = sgelaFirestoreService.getSubjects();
-        for (Subject subject : subjects) {
-            var subjectLinks = getSubjectExamLinks(subject.getId());
-            examLinks.addAll(subjectLinks);
-        }
-        return examLinks;
-    }
+//
+//    private List<ExamLink> getExamLinks() throws Exception {
+//        List<ExamLink> examLinks = new ArrayList<>();
+//        List<Subject> subjects = sgelaFirestoreService.getSubjects();
+//        for (Subject subject : subjects) {
+//            var subjectLinks = getSubjectExamLinks(subject.getId());
+//            examLinks.addAll(subjectLinks);
+//        }
+//        return examLinks;
+//    }
 
     private List<ExamLink> getSubjectExamLinks(Long subjectId) throws Exception {
         List<ExamLink> examLinks = sgelaFirestoreService.getSubjectExamLinks(subjectId);

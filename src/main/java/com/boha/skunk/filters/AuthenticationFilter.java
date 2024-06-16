@@ -1,6 +1,5 @@
 package com.boha.skunk.filters;
 
-import com.boha.skunk.data.User;
 import com.boha.skunk.util.CustomErrorResponse;
 import com.boha.skunk.util.E;
 import com.google.api.core.ApiFuture;
@@ -23,13 +22,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Enumeration;
 
 @Component
 //@Profile("prod")
 @RequiredArgsConstructor
+@SuppressWarnings("all")
 public class AuthenticationFilter extends OncePerRequestFilter {
     private static final String xx = E.COFFEE + E.COFFEE + E.COFFEE;
     String mm = E.AMP + E.AMP + E.AMP + E.AMP + "MonitorAuthenticationFilter";
@@ -172,6 +171,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 //            sendError(httpServletResponse,"Fucked, fucked, fucked!");
         }
     }
+    @SuppressWarnings("unused")
     private String extractResponseBody(HttpServletResponse httpServletResponse) throws IOException {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
@@ -183,6 +183,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     }
     static final String reds = E.RED_DOT + E.RED_DOT + E.RED_DOT + E.RED_DOT + E.RED_DOT + " Bad Response Status:";
 
+    @SuppressWarnings("unused")
     private void print(@NotNull HttpServletRequest httpServletRequest) {
         String url = httpServletRequest.getRequestURL().toString();
         logger.info(E.ANGRY + E.ANGRY + E.ANGRY + E.BELL + "Authenticating this url: " + E.BELL + " " + url);

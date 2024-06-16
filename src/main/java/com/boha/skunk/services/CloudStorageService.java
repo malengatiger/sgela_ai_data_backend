@@ -7,20 +7,14 @@ import com.google.gson.GsonBuilder;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -93,8 +87,7 @@ public class CloudStorageService {
         logger.info(mm +
                 " ............. uploadFile to cloud storage: " + mFile.getName());
         String contentType = Files.probeContentType(mFile.toPath());
-        BlobId blobId = BlobId.of(bucketName, cloudStorageDirectory
-                + mFile.getPath() + id + "_" + System.currentTimeMillis() + "."
+        BlobId blobId = BlobId.of(bucketName,  cloudStorageDirectory + "/examLink_" + id + "_" + System.currentTimeMillis() + "."
                 + getFileExtension(mFile.getName()));
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
                 .setContentType(contentType)

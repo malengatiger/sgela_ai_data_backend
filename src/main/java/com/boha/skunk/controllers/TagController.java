@@ -1,14 +1,9 @@
 package com.boha.skunk.controllers;
 
-import com.boha.skunk.data.Tag;
 import com.boha.skunk.services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController
@@ -18,6 +13,7 @@ public class TagController {
             "TagController  \uD83C\uDF4E";
     static final Logger logger = Logger.getLogger(TagController.class.getSimpleName());
 
+    @SuppressWarnings("unused")
     private final TagService tagService;
 
     @Autowired

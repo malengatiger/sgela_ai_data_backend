@@ -2,13 +2,10 @@ package com.boha.skunk.services;
 
 import com.boha.skunk.data.ExamLink;
 import com.boha.skunk.data.ExamPageContent;
-import com.boha.skunk.data.Subject;
 import com.boha.skunk.util.DirectoryUtils;
 import com.boha.skunk.util.Util;
 import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -48,6 +45,9 @@ public class DocumentProcessor {
     public List<ExamPageContent> extractPageContentForExam(Long examLinkId) throws Exception {
         logger.info("\n\n\n" + mm + bb + bb + bb + "processDocument .....");
         ExamLink examLink = sgelaFirestoreService.getExamLink(examLinkId);
+        if (examLink == null) {
+            throw new Exception("ExamLink not found");
+        }
         String collectionName = ExamPageContent.class.getSimpleName();
 
         sgelaFirestoreService.deleteDocumentsByProperty(
@@ -90,15 +90,6 @@ public class DocumentProcessor {
         return examPageContents;
     }
 
-    private static void getText(PdfDocument pdfDoc, int index, ExamPageContent examPageContent) {
-        try {
-            PdfPage pdfPage = pdfDoc.getPage(index + 1);
-            var text = PdfTextExtractor.getTextFromPage(pdfPage);
-            examPageContent.setText(text.trim());
-        } catch (Exception e) {
-            logger.info(mm + " getText: " + e.getMessage());
-        }
-    }
 
     private void getImageAndUpload(ExamLink examLink, PDFRenderer pdfRenderer, int index,
                                    ExamPageContent examPageContent) throws IOException {
@@ -108,11 +99,8 @@ public class DocumentProcessor {
             String url = cloudStorageService.uploadFile(
                     imageFile, examLink.getId(), ORG_IMAGE_FILE);
             examPageContent.setPageImageUrl(url);
-            examPageContent.setHasImages(true);
             logger.info(mm + "getImageAndUpload completed!  ...... "
                     + vv + vv + imageFile.length() + " bytes uploaded");
-        } else {
-            examPageContent.setHasImages(false);
         }
 
     }
@@ -159,11 +147,12 @@ public class DocumentProcessor {
         }
         logger.info(mm + bb + bb + bb + "Zipped file created: " + zipFile.length() + " bytes");
         try {
+            var map =  Util.objectToMap((examLink));
+            logger.info(mm + bb + bb + bb + " map to update: " + G.toJson(map) + " ");
+
             var url = cloudStorageService.uploadFile(zipFile, examLink.getId(), ORG_ZIP_FILE);
             examLink.setZippedPaperUrl(url);
-            sgelaFirestoreService.updateDocumentsByProperty(
-                    "ExamLink", "examLinkId", examLink.getId(),
-                    Util.objectToMap((examLink)));
+            sgelaFirestoreService.updateExamLink(examLink);
             logger.info(mm + bb + bb + bb + "ExamLink updated with zip url: "
                     + examLink.getTitle());
         } catch (Exception e) {
@@ -174,7 +163,7 @@ public class DocumentProcessor {
 
     private List<ExamPageContent> extractPageContentFromPdf(ExamLink examLink, File pdfFile) throws Exception {
         logger.info(mm + ".... extractPageContentFromPdf: title: " + examLink.getTitle());
-        Subject subject = examLink.getSubject();
+//        Subject subject = examLink.getSubject();
         PdfReader reader = new PdfReader(pdfFile.getAbsolutePath());
         PdfDocument pdfDoc = new PdfDocument(reader);
         PDDocument pdDocument = Loader.loadPDF(pdfFile);
@@ -190,7 +179,6 @@ public class DocumentProcessor {
                 examPageContent.setExamLinkId(examLink.getId());
                 examPageContent.setPageIndex(index);
                 getImageAndUpload(examLink, pdfRenderer, index, examPageContent);
-                getText(pdfDoc, index, examPageContent);
                 examPageContents.add(examPageContent);
                 index++;
             } catch (Exception e) {
@@ -199,7 +187,6 @@ public class DocumentProcessor {
         }
 
         logger.info(mm + "extractPageContentFromPdf: examPageContents created, subject: "
-                + subject.getTitle() + bb
                 + examPageContents.size() + " examPageContents \uD83C\uDF4E for examLink: "
                 + examLink.getDocumentTitle()
                 + " " + examLink.getTitle() + bb + bb);
