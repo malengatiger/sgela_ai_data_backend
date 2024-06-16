@@ -40,8 +40,8 @@ public class OrganizationService {
         logger.info(mm + "createSgelaOrganization starting ...logoFile: " + logoFile.length() + " splashFile: " + splashFile.length());
 
         Long id = Util.generateUniqueLong();
-        String logoUrl = cloudStorageService.uploadFile(logoFile, id, CloudStorageService.ORG_IMAGE_FILE);
-        String splashUrl = cloudStorageService.uploadFile(splashFile, id, CloudStorageService.ORG_IMAGE_FILE);
+        UploadResponse logoUrl = cloudStorageService.uploadFile(logoFile, id, CloudStorageService.ORG_IMAGE_FILE);
+        UploadResponse splashUrl = cloudStorageService.uploadFile(splashFile, id, CloudStorageService.ORG_IMAGE_FILE);
         Country country = sgelaFirestoreService.getCountryByName("South Africa");
         City city = sgelaFirestoreService.getCityByName("Pretoria");
 
@@ -88,8 +88,8 @@ public class OrganizationService {
         organization.setAdminUser(user);
         organization.setCountry(country);
         organization.setCity(city);
-        organization.setLogoUrl(logoUrl);
-        organization.setSplashUrl(splashUrl);
+        organization.setLogoUrl(logoUrl.downloadUrl);
+        organization.setSplashUrl(splashUrl.downloadUrl);
         organization.setId(id);
         organization.setCoverageRadiusInKM(1500);
         organization.setDate(new Date().toInstant().toString());
@@ -161,14 +161,15 @@ public class OrganizationService {
         branding.setOrganizationUrl(orgUrl);
         branding.setSplashTimeInSeconds(splashTimeInSeconds);
         branding.setColorIndex(colorIndex);
-        String logoUrl = null;
+        UploadResponse logoUrl = null;
         if (logoFile != null) {
             logoUrl = cloudStorageService.uploadFile(logoFile, branding.getId(), CloudStorageService.ORG_IMAGE_FILE);
         }
-        String splashUrl = cloudStorageService.uploadFile(splashFile, branding.getId(), CloudStorageService.ORG_IMAGE_FILE);
+        UploadResponse splashUrl = cloudStorageService.uploadFile(splashFile, branding.getId(), CloudStorageService.ORG_IMAGE_FILE);
 
-        branding.setLogoUrl(logoUrl);
-        branding.setSplashUrl(splashUrl);
+        assert logoUrl != null;
+        branding.setLogoUrl(logoUrl.downloadUrl);
+        branding.setSplashUrl(splashUrl.downloadUrl);
         branding.setActiveFlag(true);
         branding.setDate(new Date().toInstant().toString());
 

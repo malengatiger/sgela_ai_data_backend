@@ -63,7 +63,7 @@ class OrganizationServiceTest {
         user.setLastName("Doe");
         user.setDate(new Date().toInstant().toString());
         user.setOrganizationId(1L);
-        when(cloudStorageService.uploadFile(any(), any(), any())).thenReturn("logoUrl", "splashUrl");
+//        when(cloudStorageService.uploadFile(any(), any(), any())).thenReturn("logoUrl", "splashUrl");
         when(sgelaFirestoreService.getCountryByName("South Africa")).thenReturn(new com.boha.skunk.data.Country());
         when(sgelaFirestoreService.getCityByName("Cape Town")).thenReturn(new com.boha.skunk.data.City());
         when(userService.createUser(any())).thenReturn(user);
@@ -115,7 +115,7 @@ class OrganizationServiceTest {
         // Given
         File logoFile = new File("logo.png");
         File splashFile = new File("splash.png");
-        when(cloudStorageService.uploadFile(any(), any(), any())).thenReturn("logoUrl", "splashUrl");
+//        when(cloudStorageService.uploadFile(any(), any(), any())).thenReturn("logoUrl", "splashUrl");
         when(sgelaFirestoreService.addDocument(any())).thenReturn(null);
 
         // When

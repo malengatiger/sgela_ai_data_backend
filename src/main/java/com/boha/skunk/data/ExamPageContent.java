@@ -5,11 +5,19 @@ public class ExamPageContent {
     private Long answerLinkId;
     private Long id;
     private int pageIndex;
-    private String pageImageUrl;
+    private String pageImageUrl, cloudStorageUri;
     private String title;
 
     public Long getAnswerLinkId() {
         return answerLinkId;
+    }
+
+    public String getCloudStorageUri() {
+        return cloudStorageUri;
+    }
+
+    public void setCloudStorageUri(String cloudStorageUri) {
+        this.cloudStorageUri = cloudStorageUri;
     }
 
     public void setAnswerLinkId(Long answerLinkId) {

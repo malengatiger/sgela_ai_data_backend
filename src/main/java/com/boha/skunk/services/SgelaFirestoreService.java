@@ -189,8 +189,7 @@ public class SgelaFirestoreService {
             ApiFuture<WriteResult> updateFuture = documentRef.set(examLink, SetOptions.merge());
             updateFuture.get(); // Wait for the update to complete
             logger.info(mm + "updateExamLink: ExamLink " + " -  updated : "
-                    + examLink.getId() + " :  " + examLink.getDocumentTitle() + " - "
-                    + examLink.getTitle() + "\n" + examLink.getZippedPaperUrl());
+                    + G.toJson(examLink));
         }
     }
 

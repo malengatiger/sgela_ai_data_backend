@@ -1,0 +1,883 @@
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580643988.pdf:
+    Creation time:          Sun, 16 Jun 2024 23:30:46 GMT
+    Update time:            Sun, 16 Jun 2024 23:30:46 GMT
+    Storage class:          STANDARD
+    Content-Length:         2547121
+    Content-Type:           application/pdf
+    Hash (crc32c):          XrYhbw==
+    Hash (md5):             UOmnFuPMZmxFqWLwyQojNA==
+    ETag:                   CISltuej4YYDEAE=
+    Generation:             1718580646089348
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580646884.png:
+    Creation time:          Sun, 16 Jun 2024 23:30:47 GMT
+    Update time:            Sun, 16 Jun 2024 23:30:47 GMT
+    Storage class:          STANDARD
+    Content-Length:         94676
+    Content-Type:           image/png
+    Hash (crc32c):          Noqabw==
+    Hash (md5):             X2ZFxmVUF6h4Jm9v4t4zgQ==
+    ETag:                   CKyCl+ij4YYDEAE=
+    Generation:             1718580647674156
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580647778.png:
+    Creation time:          Sun, 16 Jun 2024 23:30:49 GMT
+    Update time:            Sun, 16 Jun 2024 23:30:49 GMT
+    Storage class:          STANDARD
+    Content-Length:         146617
+    Content-Type:           image/png
+    Hash (crc32c):          XaTzRQ==
+    Hash (md5):             gfsdaCPJbDtrL43Y0HuR2g==
+    ETag:                   COeT/Oij4YYDEAE=
+    Generation:             1718580649331175
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580649409.png:
+    Creation time:          Sun, 16 Jun 2024 23:30:49 GMT
+    Update time:            Sun, 16 Jun 2024 23:30:49 GMT
+    Storage class:          STANDARD
+    Content-Length:         19173
+    Content-Type:           image/png
+    Hash (crc32c):          FXdz8A==
+    Hash (md5):             U+pOxd8R8zprHF1RJNq9tA==
+    ETag:                   CJ+woOmj4YYDEAE=
+    Generation:             1718580649924639
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580650041.png:
+    Creation time:          Sun, 16 Jun 2024 23:30:50 GMT
+    Update time:            Sun, 16 Jun 2024 23:30:50 GMT
+    Storage class:          STANDARD
+    Content-Length:         67230
+    Content-Type:           image/png
+    Hash (crc32c):          p91+Pg==
+    Hash (md5):             D3+8G/1vb3n9K9wIfE1Biw==
+    ETag:                   CIb80Omj4YYDEAE=
+    Generation:             1718580650720774
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580650982.png:
+    Creation time:          Sun, 16 Jun 2024 23:30:52 GMT
+    Update time:            Sun, 16 Jun 2024 23:30:52 GMT
+    Storage class:          STANDARD
+    Content-Length:         1004921
+    Content-Type:           image/png
+    Hash (crc32c):          ay1ozA==
+    Hash (md5):             29WQfbRPK2sw6jY+MXuenA==
+    ETag:                   CNO1w+qj4YYDEAE=
+    Generation:             1718580652595923
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580652703.png:
+    Creation time:          Sun, 16 Jun 2024 23:30:53 GMT
+    Update time:            Sun, 16 Jun 2024 23:30:53 GMT
+    Storage class:          STANDARD
+    Content-Length:         91526
+    Content-Type:           image/png
+    Hash (crc32c):          95qQZg==
+    Hash (md5):             Sz78llAYiA37cACmiZA7dA==
+    ETag:                   CImE+uqj4YYDEAE=
+    Generation:             1718580653490697
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580653639.png:
+    Creation time:          Sun, 16 Jun 2024 23:30:54 GMT
+    Update time:            Sun, 16 Jun 2024 23:30:54 GMT
+    Storage class:          STANDARD
+    Content-Length:         722378
+    Content-Type:           image/png
+    Hash (crc32c):          ySdPgw==
+    Hash (md5):             4C+W+zXXEEnJfmuXsxq2PQ==
+    ETag:                   CNeJ0uuj4YYDEAE=
+    Generation:             1718580654933207
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580655095.png:
+    Creation time:          Sun, 16 Jun 2024 23:30:55 GMT
+    Update time:            Sun, 16 Jun 2024 23:30:55 GMT
+    Storage class:          STANDARD
+    Content-Length:         61411
+    Content-Type:           image/png
+    Hash (crc32c):          PX9isw==
+    Hash (md5):             rvzcCYnDLrZowN9cYnOoNg==
+    ETag:                   CKa1g+yj4YYDEAE=
+    Generation:             1718580655741606
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580655967.png:
+    Creation time:          Sun, 16 Jun 2024 23:30:57 GMT
+    Update time:            Sun, 16 Jun 2024 23:30:57 GMT
+    Storage class:          STANDARD
+    Content-Length:         1396191
+    Content-Type:           image/png
+    Hash (crc32c):          W3IJrA==
+    Hash (md5):             SO+LfPBKA9CVK20NpaDBrw==
+    ETag:                   CJHL2eyj4YYDEAE=
+    Generation:             1718580657153425
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580657266.png:
+    Creation time:          Sun, 16 Jun 2024 23:30:57 GMT
+    Update time:            Sun, 16 Jun 2024 23:30:57 GMT
+    Storage class:          STANDARD
+    Content-Length:         91081
+    Content-Type:           image/png
+    Hash (crc32c):          O3jRcA==
+    Hash (md5):             OOk+N2UgVMY8wMuHreymYA==
+    ETag:                   CNGTiO2j4YYDEAE=
+    Generation:             1718580657916369
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580658082.png:
+    Creation time:          Sun, 16 Jun 2024 23:30:59 GMT
+    Update time:            Sun, 16 Jun 2024 23:30:59 GMT
+    Storage class:          STANDARD
+    Content-Length:         826894
+    Content-Type:           image/png
+    Hash (crc32c):          xzX5tA==
+    Hash (md5):             t3Fq3pJdtIzAXUvTqziNkQ==
+    ETag:                   CJbB5e2j4YYDEAE=
+    Generation:             1718580659445910
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580659547.png:
+    Creation time:          Sun, 16 Jun 2024 23:31:00 GMT
+    Update time:            Sun, 16 Jun 2024 23:31:00 GMT
+    Storage class:          STANDARD
+    Content-Length:         119033
+    Content-Type:           image/png
+    Hash (crc32c):          dzKhKg==
+    Hash (md5):             reLktwv36oDxg2eiv5Ccbw==
+    ETag:                   COyVnu6j4YYDEAE=
+    Generation:             1718580660374252
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580660585.png:
+    Creation time:          Sun, 16 Jun 2024 23:31:01 GMT
+    Update time:            Sun, 16 Jun 2024 23:31:01 GMT
+    Storage class:          STANDARD
+    Content-Length:         1242494
+    Content-Type:           image/png
+    Hash (crc32c):          d9/z0Q==
+    Hash (md5):             VyCpXLfgQC30QIkjze7DKg==
+    ETag:                   CKPp+e6j4YYDEAE=
+    Generation:             1718580661875875
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580661966.png:
+    Creation time:          Sun, 16 Jun 2024 23:31:02 GMT
+    Update time:            Sun, 16 Jun 2024 23:31:02 GMT
+    Storage class:          STANDARD
+    Content-Length:         89244
+    Content-Type:           image/png
+    Hash (crc32c):          UaPJEg==
+    Hash (md5):             SYSe+H6Wuc62V3Q/YXY68w==
+    ETag:                   CPWppu+j4YYDEAE=
+    Generation:             1718580662605045
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580662755.png:
+    Creation time:          Sun, 16 Jun 2024 23:31:03 GMT
+    Update time:            Sun, 16 Jun 2024 23:31:03 GMT
+    Storage class:          STANDARD
+    Content-Length:         1074398
+    Content-Type:           image/png
+    Hash (crc32c):          7x60cQ==
+    Hash (md5):             KKOIsdYLh4xiuRLAoHGMPA==
+    ETag:                   CMj99++j4YYDEAE=
+    Generation:             1718580663942856
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580664036.png:
+    Creation time:          Sun, 16 Jun 2024 23:31:04 GMT
+    Update time:            Sun, 16 Jun 2024 23:31:04 GMT
+    Storage class:          STANDARD
+    Content-Length:         113086
+    Content-Type:           image/png
+    Hash (crc32c):          CfkCLw==
+    Hash (md5):             FcyQoZq5157C9M1cN/s6DQ==
+    ETag:                   CKy7qfCj4YYDEAE=
+    Generation:             1718580664753580
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580664897.png:
+    Creation time:          Sun, 16 Jun 2024 23:31:06 GMT
+    Update time:            Sun, 16 Jun 2024 23:31:06 GMT
+    Storage class:          STANDARD
+    Content-Length:         658063
+    Content-Type:           image/png
+    Hash (crc32c):          qQku6g==
+    Hash (md5):             I+n8TWxpI38YzZDsrtl8jA==
+    ETag:                   CPLSjPGj4YYDEAE=
+    Generation:             1718580666378610
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580666463.png:
+    Creation time:          Sun, 16 Jun 2024 23:31:07 GMT
+    Update time:            Sun, 16 Jun 2024 23:31:07 GMT
+    Storage class:          STANDARD
+    Content-Length:         90234
+    Content-Type:           image/png
+    Hash (crc32c):          lBc3Og==
+    Hash (md5):             ZaFYFE/gbxyGX0VfYx24Iw==
+    ETag:                   CLO0t/Gj4YYDEAE=
+    Generation:             1718580667079219
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580667205.png:
+    Creation time:          Sun, 16 Jun 2024 23:31:08 GMT
+    Update time:            Sun, 16 Jun 2024 23:31:08 GMT
+    Storage class:          STANDARD
+    Content-Length:         791123
+    Content-Type:           image/png
+    Hash (crc32c):          Dd6KAg==
+    Hash (md5):             qLSuTK6rUZ0fkyjxmf82Sg==
+    ETag:                   CPPUlPKj4YYDEAE=
+    Generation:             1718580668607091
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568720616_1718580669223.zip:
+    Creation time:          Sun, 16 Jun 2024 23:31:10 GMT
+    Update time:            Sun, 16 Jun 2024 23:31:10 GMT
+    Storage class:          STANDARD
+    Content-Length:         8582300
+    Content-Type:           application/zip
+    Hash (crc32c):          agcxQg==
+    Hash (md5):             DZukg1iizJNskg8OabqN+A==
+    ETag:                   CO6tnvOj4YYDEAE=
+    Generation:             1718580670863086
+    Metageneration:         1
+    ACL:                    [
+  {
+    "entity": "project-owners-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "owners"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-editors-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "editors"
+    },
+    "role": "OWNER"
+  },
+  {
+    "entity": "project-viewers-806811639009",
+    "projectTeam": {
+      "projectNumber": "806811639009",
+      "team": "viewers"
+    },
+    "role": "READER"
+  },
+  {
+    "email": "latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "entity": "user-latest-service-acct@busha-2024.iam.gserviceaccount.com",
+    "role": "OWNER"
+  }
+]
+TOTAL: 21 objects, 19829194 bytes (18.91 MiB)

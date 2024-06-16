@@ -2,6 +2,7 @@ package com.boha.skunk.services;
 
 import com.boha.skunk.data.ExamLink;
 import com.boha.skunk.data.ExamPageContent;
+import com.boha.skunk.data.UploadResponse;
 import com.boha.skunk.util.DirectoryUtils;
 import com.boha.skunk.util.Util;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -57,13 +58,23 @@ public class DocumentProcessor {
 
         List<ExamPageContent> examPageContents = new ArrayList<>();
         int index = 0;
-        File pdfFile = cloudStorageService.downloadFile(examLink.getLink());
+        File pdfFile = cloudStorageService.downloadPdfFile(examLink.getLink(), examLink.getId());
         filesToBeZipped.clear();
         try {
             sgelaFirestoreService.deleteDocumentsByProperty(
                     collectionName,
                     "examLinkId", examLink.getId());
+
+            //
+            logger.info(mm + "\n\n..... uploading  pdf file: " +pdfFile.getName());
+            UploadResponse uploadResponse = cloudStorageService.uploadFile(pdfFile, examLink.getId(), 4);
+            logger.info(mm + "..... uploadResponse for pdf file: " + G.toJson(uploadResponse));
+            examLink.setExamPdfUrl(uploadResponse.downloadUrl);
+            examLink.setCloudStorageUri(uploadResponse.gsUri);
+            sgelaFirestoreService.updateExamLink(examLink);
+            //
             examPageContents = extractPageContentFromPdf(examLink, pdfFile);
+
             List<String> list = sgelaFirestoreService.addExamPageContents(
                     examPageContents);
             var msg = "Firestore: ExamPageContent documents added: "
@@ -96,9 +107,10 @@ public class DocumentProcessor {
         File imageFile = null;
         imageFile = convertPdfPageToImage(pdfRenderer, index, examLink.getId());
         if (imageFile != null && imageFile.exists()) {
-            String url = cloudStorageService.uploadFile(
+            UploadResponse uploadResponse = cloudStorageService.uploadFile(
                     imageFile, examLink.getId(), ORG_IMAGE_FILE);
-            examPageContent.setPageImageUrl(url);
+            examPageContent.setPageImageUrl(uploadResponse.downloadUrl);
+            examPageContent.setCloudStorageUri(uploadResponse.gsUri);
             logger.info(mm + "getImageAndUpload completed!  ...... "
                     + vv + vv + imageFile.length() + " bytes uploaded");
         }
@@ -147,14 +159,13 @@ public class DocumentProcessor {
         }
         logger.info(mm + bb + bb + bb + "Zipped file created: " + zipFile.length() + " bytes");
         try {
-            var map =  Util.objectToMap((examLink));
-            logger.info(mm + bb + bb + bb + " map to update: " + G.toJson(map) + " ");
+            logger.info(mm + bb + bb + bb + " map to update: " + G.toJson(examLink) + " ");
 
             var url = cloudStorageService.uploadFile(zipFile, examLink.getId(), ORG_ZIP_FILE);
-            examLink.setZippedPaperUrl(url);
+            examLink.setZippedPaperUrl(url.downloadUrl);
             sgelaFirestoreService.updateExamLink(examLink);
             logger.info(mm + bb + bb + bb + "ExamLink updated with zip url: "
-                    + examLink.getTitle());
+                    + examLink.getZippedPaperUrl() + "\n\n\n");
         } catch (Exception e) {
             logger.info(mm + "ERROR: Failed to update  \uD83D\uDC7F " + examLink.getZippedPaperUrl());
             throw new RuntimeException(e);

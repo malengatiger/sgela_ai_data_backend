@@ -1,5 +1,6 @@
 package com.boha.skunk.services;
 
+import com.boha.skunk.data.UploadResponse;
 import com.boha.skunk.util.DirectoryUtils;
 import com.google.cloud.storage.*;
 import com.google.gson.Gson;
@@ -49,7 +50,7 @@ public class CloudStorageService {
     private String cloudStorageDirectory;
 
 
-    public File downloadFile(String url) throws IOException {
+    public File downloadZipFile(String url) throws IOException {
         File dir = DirectoryUtils.createDirectoryIfNotExists("pdfs");
         String path = dir.getPath() + "/images_"
                 + System.currentTimeMillis() + ".zip";
@@ -59,6 +60,20 @@ public class CloudStorageService {
                 file);
 
         logger.info(mm + "File downloaded from Cloud Storage: "
+                + (file.length() / 1024) + "K bytes");
+        return file;
+    }
+    public File downloadPdfFile(String url, Long examLinkId) throws IOException {
+        File dir = DirectoryUtils.createDirectoryIfNotExists("pdfs");
+        String path = dir.getPath()
+                + "/pdf_" + examLinkId + "_"
+                + System.currentTimeMillis() + ".pdf";
+        File file = new File(path);
+        var mUrl = URLEncoder.encode(url, StandardCharsets.UTF_8);
+        FileUtils.copyURLToFile(new URL(url),
+                file);
+
+        logger.info(mm + "PDF File downloaded from Web"
                 + (file.length() / 1024) + "K bytes");
         return file;
     }
@@ -82,27 +97,32 @@ public class CloudStorageService {
     }
 
     public static String directory = "cloudstorage";
-    public String uploadFile(File mFile, Long id, int type) throws IOException {
+    public UploadResponse uploadFile(File mFile, Long id, int type) throws IOException {
         File dir = DirectoryUtils.createDirectoryIfNotExists(directory);
         logger.info(mm +
                 " ............. uploadFile to cloud storage: " + mFile.getName());
         String contentType = Files.probeContentType(mFile.toPath());
-        BlobId blobId = BlobId.of(bucketName,  cloudStorageDirectory + "/examLink_" + id + "_" + System.currentTimeMillis() + "."
-                + getFileExtension(mFile.getName()));
+        String name = cloudStorageDirectory
+                + "/examLink_" + id + "_" + System.currentTimeMillis()  +  "."
+                + getFileExtension(mFile.getName());
+        BlobId blobId = BlobId.of(bucketName,  name);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
                 .setContentType(contentType)
                 .build();
 
         Blob blob = storage.createFrom(blobInfo, Paths.get(mFile.getPath()));
-
         // Generate a signed URL for the blob with no permissions required
         String downloadUrl = String.valueOf(blob.signUrl(3650, TimeUnit.DAYS, Storage.SignUrlOption.withV2Signature()));
         logger.info(mm +
                 " file uploaded to cloud storage, path: " + mFile.getAbsolutePath() + " size: " + mFile.length());
         logger.info(mm +
                 " file uploaded to cloud storage, type: " + type + " \n" + downloadUrl);
-        return downloadUrl;
+        //gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568522833_1718570225499.png
+        String gsUri = "gs://" + bucketName + "/" + name;
+        return new UploadResponse(downloadUrl, gsUri);
     }
 
+
+//gs://busha-2024.appspot.com/sgelaMedia/examLink_1718568898273_1718575914689.pdf
 
 }

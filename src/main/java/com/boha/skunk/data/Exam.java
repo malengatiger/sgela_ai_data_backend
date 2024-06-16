@@ -11,8 +11,27 @@ public abstract class Exam {
     public  String zippedPaperUrl;
     public  boolean isMemo;
     public  int year;
-     public Long getId() {
+    public  String examPdfUrl;
+    public  String cloudStorageUri;
+
+    public String getCloudStorageUri() {
+        return cloudStorageUri;
+    }
+
+    public void setCloudStorageUri(String cloudStorageUri) {
+        this.cloudStorageUri = cloudStorageUri;
+    }
+
+    public Long getId() {
         return id;
+    }
+
+    public String getExamPdfUrl() {
+        return examPdfUrl;
+    }
+
+    public void setExamPdfUrl(String examPdfUrl) {
+        this.examPdfUrl = examPdfUrl;
     }
 
     public void setId(Long id) {

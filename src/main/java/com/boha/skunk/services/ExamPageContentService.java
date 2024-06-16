@@ -204,9 +204,10 @@ public class ExamPageContentService {
         File imageFile = null;
         imageFile = convertPdfPageToImage(pdfRenderer, index);
         if (imageFile != null && imageFile.exists()) {
-            String url = cloudStorageService.uploadFile(
+            UploadResponse url = cloudStorageService.uploadFile(
                     imageFile, examLink.getId(), ORG_IMAGE_FILE);
-            examPageContent.setPageImageUrl(url);
+            examPageContent.setPageImageUrl(url.downloadUrl);
+            examPageContent.setCloudStorageUri(url.gsUri);
             logger.info(mm + "getImageAndUpload completed!  ...... "
                     + vv + vv + imageFile.length() + " bytes uploaded");
         }
@@ -229,8 +230,8 @@ public class ExamPageContentService {
         }
         logger.info(mm + bb + bb + bb + "Zipped file created: " + zipFile.length() + " bytes");
         try {
-            var url = cloudStorageService.uploadFile(zipFile, examLink.getId(), ORG_ZIP_FILE);
-            examLink.setZippedPaperUrl(url);
+            UploadResponse url = cloudStorageService.uploadFile(zipFile, examLink.getId(), ORG_ZIP_FILE);
+            examLink.setZippedPaperUrl(url.downloadUrl);
             logger.info(mm + "ExamLink Zipped file uploaded: " + url);
             sgelaFirestoreService.updateExamLink(examLink);
         } catch (Exception e) {
@@ -324,16 +325,7 @@ public class ExamPageContentService {
 
         return mList;
     }
-//
-//    private List<ExamLink> getExamLinks() throws Exception {
-//        List<ExamLink> examLinks = new ArrayList<>();
-//        List<Subject> subjects = sgelaFirestoreService.getSubjects();
-//        for (Subject subject : subjects) {
-//            var subjectLinks = getSubjectExamLinks(subject.getId());
-//            examLinks.addAll(subjectLinks);
-//        }
-//        return examLinks;
-//    }
+
 
     private List<ExamLink> getSubjectExamLinks(Long subjectId) throws Exception {
         List<ExamLink> examLinks = sgelaFirestoreService.getSubjectExamLinks(subjectId);

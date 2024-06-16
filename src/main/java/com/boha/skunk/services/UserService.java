@@ -1,5 +1,6 @@
 package com.boha.skunk.services;
 
+import com.boha.skunk.data.UploadResponse;
 import com.boha.skunk.data.User;
 import com.boha.skunk.util.Util;
 import com.google.api.core.ApiFuture;
@@ -82,8 +83,8 @@ public class UserService {
             throw new Exception("No User aboard. Mutiny abounds!");
         }
 
-        String url = cloudStorageService.uploadFile(file, user.getId(),CloudStorageService.ORG_IMAGE_FILE);
-        user.setProfileUrl(url);
+        UploadResponse url = cloudStorageService.uploadFile(file, user.getId(),CloudStorageService.ORG_IMAGE_FILE);
+        user.setProfileUrl(url.downloadUrl);
         logger.info(mm+"User found, to be updated with profileUrl: "+ G.toJson(user));
         return sgelaFirestoreService.updateUser(user);
     }
