@@ -32,6 +32,9 @@ import java.util.regex.Pattern;
 
 @SuppressWarnings("all")
 @Service
+/**
+ *  Scrapes the Web to download exam paper links
+ */
 public class LinkExtractorService {
     private final OkHttpClient client;
     static final String xx = "\uD83E\uDD43\uD83E\uDD43\uD83E\uDD43 LinkExtractorService \uD83E\uDD43";
@@ -83,6 +86,10 @@ public class LinkExtractorService {
         }
     }
 
+    /**
+     *  Download the main page of the website and save all exam paper links found
+     * @return List<SubjectExamInterfaceBag>
+     */
     public List<SubjectExamInterfaceBag> downloadExamDocuments() {
         List<SubjectExamInterfaceBag> bags = new ArrayList<>();
 

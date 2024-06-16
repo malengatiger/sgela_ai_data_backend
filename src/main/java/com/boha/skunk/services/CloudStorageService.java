@@ -21,7 +21,9 @@ import java.util.logging.Logger;
 
 @Service
 @SuppressWarnings({"all"})
-
+/**
+ *  Manages file uploads and downloads from Cloud Storage
+ */
 public class CloudStorageService {
 
     private final Storage storage;
@@ -97,6 +99,15 @@ public class CloudStorageService {
     }
 
     public static String directory = "cloudstorage";
+
+    /**
+     *
+     * @param mFile - File to be uploaded to Cloud Storage
+     * @param id - id of the ExamLink or AnswerLink object
+     * @param type 1, 2,3 or 4
+     * @return @UploadResponse
+     * @throws IOException
+     */
     public UploadResponse uploadFile(File mFile, Long id, int type) throws IOException {
         File dir = DirectoryUtils.createDirectoryIfNotExists(directory);
         logger.info(mm +

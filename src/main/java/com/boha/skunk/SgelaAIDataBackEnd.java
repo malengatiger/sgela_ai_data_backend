@@ -24,6 +24,9 @@ import java.util.*;
 import java.util.logging.Logger;
 @SuppressWarnings("all")
 @SpringBootApplication
+/**
+ *  SgelaAIDataBackEnd is a Springboot backend app that manages data for Sgela AI Agents and Chatbots
+ */
 public class SgelaAIDataBackEnd implements ApplicationListener<ApplicationReadyEvent> {
 	static final String mm = "\uD83E\uDD66\uD83E\uDD66\uD83E\uDD66 SgelaAIDataBackEnd \uD83E\uDD66";
 

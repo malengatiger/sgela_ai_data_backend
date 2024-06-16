@@ -30,7 +30,9 @@ import static com.boha.skunk.services.CloudStorageService.*;
 
 @SuppressWarnings({"all"})
 @Service
-
+/**
+ *  Manages the extraction of pdf and image files for an Exam
+ */
 public class DocumentProcessor {
     static final Logger logger = LoggerFactory.getLogger(ExamPageContentService.class.getSimpleName());
     private static final String mm = "DocumentProcessor: ";
@@ -43,6 +45,12 @@ public class DocumentProcessor {
         this.sgelaFirestoreService = sgelaFirestoreService;
     }
 
+    /**
+     *
+     * @param examLinkId - id of the ExamLink
+     * @return List<ExamPageContent>
+     * @throws Exception
+     */
     public List<ExamPageContent> extractPageContentForExam(Long examLinkId) throws Exception {
         logger.info("\n\n\n" + mm + bb + bb + bb + "processDocument .....");
         ExamLink examLink = sgelaFirestoreService.getExamLink(examLinkId);
