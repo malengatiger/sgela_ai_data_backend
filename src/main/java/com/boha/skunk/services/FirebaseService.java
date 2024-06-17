@@ -42,7 +42,7 @@ public class FirebaseService {
         logger.info(E.AMP+E.AMP+E.AMP+ "FirebaseService: .... initializing Firebase ....");
         FirebaseOptions options;
         logger.info(E.AMP+E.AMP+E.AMP+
-                " Project Id from Properties: "+E.RED_APPLE + " " + projectId);
+                " Project Id from Properties: "+E.RED_APPLE + " " + projectId + " bucket: " + storageBucket);
         try {
             options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.getApplicationDefault())

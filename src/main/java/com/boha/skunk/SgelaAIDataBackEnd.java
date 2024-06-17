@@ -59,12 +59,13 @@ public class SgelaAIDataBackEnd implements ApplicationListener<ApplicationReadyE
 			ip = InetAddress.getLocalHost();
 			logger.info(E.PEAR + E.PEAR + E.PEAR + E.PEAR
 					+ " Current IP address : " + ip.getHostAddress());
-			IpAddress address = getIpAddress2();
-			logger.info(E.PEAR + E.PEAR + E.PEAR + E.PEAR
-					+ " Current Real IP address : " + address.ipAddress + " port: " + address.port);
+
 			if (activeProfile.equalsIgnoreCase("dev")) {
 				logger.info(E.PEAR + E.PEAR + E.PEAR + E.PEAR
 						+ " Active Profile : Development");
+				IpAddress address = getIpAddress2();
+				logger.info(E.PEAR + E.PEAR + E.PEAR + E.PEAR
+						+ " Current Real IP address : " + address.ipAddress + " port: " + address.port);
 			}
 			if (activeProfile.equalsIgnoreCase("prod")) {
 				logger.info(E.PEAR + E.PEAR + E.PEAR + E.PEAR

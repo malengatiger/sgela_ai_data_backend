@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -42,7 +43,7 @@ public class ExamLinkController {
     public ResponseEntity<String> hello() {
         logger.info(mm + "say hello! ..... ");
         return ResponseEntity.ok(
-                "<h1>Sgela AI Backend</h1><p>The SgelaAI Backend to manage data</p>");
+                "<h1>\uD83C\uDF4E\uD83C\uDF4E\uD83C\uDF4E Sgela AI Backend</h1><p>The SgelaAI Backend to manage data</p> <p> Date:  <b>"+new Date().toString()+"</b></p>");
     }
 
     @GetMapping("/getSubjects")

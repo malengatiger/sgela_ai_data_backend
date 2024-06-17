@@ -155,17 +155,17 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
 
-        if (httpServletResponse.getStatus() == 200) {
+        if (httpServletResponse.getStatus() == 200 || (httpServletResponse.getStatus() == 201)) {
             logger.info("\uD83D\uDD37\uD83D\uDD37\uD83D\uDD37\uD83D\uDD37"
                     + httpServletRequest.getRequestURI() + " \uD83D\uDD37 Status Code: "
                     + httpServletResponse.getStatus() + "  \uD83D\uDD37 \uD83D\uDD37 \uD83D\uDD37 ");
 
         }
-        if (httpServletResponse.getStatus() != 200) {
+        if (httpServletResponse.getStatus() > 201) {
             logger.info(reds + " " + httpServletRequest.getRequestURI() + " \uD83D\uDD37 Status Code: "
                     + httpServletResponse.getStatus() + "  \uD83D\uDCA6\uD83D\uDCA6  ");
-//            logger.info(mm+ " Some fucking error: "
-//                    + extractResponseBody(httpServletResponse));
+            logger.info(mm+ " Some fucking error: "
+                    + extractResponseBody(httpServletResponse));
 //            sendError(httpServletResponse,"Fucked, fucked, fucked!");
         }
     }

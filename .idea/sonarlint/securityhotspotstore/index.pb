@@ -231,3 +231,5 @@ e
 5src/main/java/com/boha/skunk/data/UploadResponse.java,6/e/6e1d014272eaddf666150188151119b3906167c5
 7
 gs.json,8/5/8596362ddb32b7e6eba618a05344f5906fb8dd49
+j
+:src/main/java/com/boha/skunk/util/DurationTypeAdapter.java,7/f/7f51afbf40b3a9ededbac74af755a7012a12e996

@@ -10,7 +10,6 @@ gcloud run deploy sgela-service-x \
      --platform=managed \
      --project=busha-2024 \
      --allow-unauthenticated \
-     --update-env-vars "GOOGLE_CLOUD_PROJECT=busha-2024, PROJECT_ID=busha-2024" \
      --image=gcr.io/busha-2024/sgela-service-x
 
 echo "🍎🍎🍎 ... hopefully deployed SgelaAI Backend Service on Cloud Run 🍎🍎🍎"
