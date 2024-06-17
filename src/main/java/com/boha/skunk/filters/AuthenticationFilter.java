@@ -1,5 +1,7 @@
 package com.boha.skunk.filters;
 
+import com.boha.skunk.data.User;
+import com.boha.skunk.services.SgelaFirestoreService;
 import com.boha.skunk.util.CustomErrorResponse;
 import com.boha.skunk.util.E;
 import com.google.api.core.ApiFuture;
@@ -13,7 +15,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,7 @@ import java.util.Enumeration;
 
 @Component
 //@Profile("prod")
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @SuppressWarnings("all")
 public class AuthenticationFilter extends OncePerRequestFilter {
     private static final String xx = E.COFFEE + E.COFFEE + E.COFFEE;
@@ -36,9 +37,15 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     private static final Gson G = new GsonBuilder().setPrettyPrinting().create();
     @Value("${spring.profiles.active}")
     private String profile;
+    private final SgelaFirestoreService sgelaFirestoreService;
 
     @Value("${authOn}")
     private int authOn;
+
+    public AuthenticationFilter(SgelaFirestoreService sgelaFirestoreService) {
+        this.sgelaFirestoreService = sgelaFirestoreService;
+    }
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
@@ -46,7 +53,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                                     @NotNull FilterChain filterChain) throws ServletException, IOException {
 
         if (authOn == 0) {
-            logger.info(mm+" Authentication is currently turned off. Remember this, fella!");
+            logger.info(mm + " Authentication is currently turned off. Remember this, fella!");
             doFilter(httpServletRequest, httpServletResponse, filterChain);
             return;
         }
@@ -83,7 +90,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         //allow localhost
-        if (url.contains("localhost") || url.contains("192.168.86.242")
+        if (url.contains("localhost") || url.contains("192.168.88.2")
                 || url.contains("192.168.86.230")) {
             logger.info(mm + " contextPath: " + httpServletRequest.getContextPath()
                     + E.AMP + " requestURI: " + httpServletRequest.getRequestURI() + "\n\n");
@@ -110,25 +117,16 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
             if (mToken != null) {
                 String userId = mToken.getUid();
+                User user = sgelaFirestoreService.getUserByFirebaseId(userId);
+                if (user != null) {
+                    logger.info("\uD83D\uDE21 \uD83D\uDE21 \uD83D\uDE21  user is known,  .. enter sesame@");
+                    doFilter(httpServletRequest, httpServletResponse, filterChain);
+                    return;
+                } else {
+                    logger.info("\uD83D\uDE21 \uD83D\uDE21 \uD83D\uDE21  user unknown, possible new registration");
+                    sendError(httpServletResponse, "user unknown, possible new registratio");
 
-//                User user = userRepository.findByFirebaseUserId(userId);
-//                if (user == null) {
-//                    logger.info("\uD83D\uDE21 \uD83D\uDE21 \uD83D\uDE21  user unknown, possible new registration");
-//                    doFilter(httpServletRequest, httpServletResponse, filterChain);
-//                    return;
-//                }
-//                boolean subscriptionIsValid = false;
-//                Long id = user.getOrganization().getId();
-//                logger.info("\uD83D\uDE21 \uD83D\uDE21 \uD83D\uDE21 organizationId: " + id);
-//                if (id != null) {
-//                    subscriptionIsValid = subscriptionService.isSubscriptionValid(id);
-//                }
-//                if (subscriptionIsValid) {
-//                    doFilter(httpServletRequest, httpServletResponse, filterChain);
-//                } else {
-//                    LOGGER.info("\uD83D\uDE21 \uD83D\uDE21 \uD83D\uDE21 request has been forbidden, subscription invalid");
-//                    sendError(httpServletResponse, "request has been forbidden, subscription invalid");
-//                }
+                }
 
             } else {
                 logger.info("\uD83D\uDE21 \uD83D\uDE21 \uD83D\uDE21 request has been forbidden, token invalid");
@@ -138,7 +136,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             String msg = "an Exception happened: \uD83C\uDF4E " + e.getMessage();
             logger.info(E.RED_DOT + E.RED_DOT + E.RED_DOT + E.RED_DOT + E.RED_DOT + E.RED_DOT + E.RED_DOT + " " + msg
-                    + "\n failed url: " + httpServletRequest.getRequestURL().toString()+ E.RED_DOT);
+                    + "\n failed url: " + httpServletRequest.getRequestURL().toString() + E.RED_DOT);
             e.printStackTrace();
             sendError(httpServletResponse, e.getMessage());
         }
@@ -171,6 +169,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 //            sendError(httpServletResponse,"Fucked, fucked, fucked!");
         }
     }
+
     @SuppressWarnings("unused")
     private String extractResponseBody(HttpServletResponse httpServletResponse) throws IOException {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -181,6 +180,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             return outputStream.toString();
         }
     }
+
     static final String reds = E.RED_DOT + E.RED_DOT + E.RED_DOT + E.RED_DOT + E.RED_DOT + " Bad Response Status:";
 
     @SuppressWarnings("unused")

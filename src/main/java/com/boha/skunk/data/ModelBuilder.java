@@ -6,10 +6,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 @SuppressWarnings("all")
@@ -18,30 +15,30 @@ public class ModelBuilder {
     static final Logger logger = Logger.getLogger(VertexService.class.getSimpleName());
     static final Gson G = new GsonBuilder().setPrettyPrinting().create();
 
-    public static void main(String[] args) {
-        logger.info(mm);
-        List<Object> list = new ArrayList<>();
-        list.add(buildOrganization());
-        list.add(buildUser());
-        list.add(buildExamDocument());
-        list.add(buildExamLink());
-        list.add(buildExamPageContent());
-        logger.info(mm + G.toJson(list));
-
-        var mJson = G.toJson(list);
-        // Write mJson to file models.json
-        try (FileWriter fileWriter = new FileWriter("models.json")) {
-            fileWriter.write(mJson);
-            logger.info("mJson written to models.json");
-        } catch (IOException e) {
-            logger.severe("An IO exception occurred while writing to file: " + e.getMessage());
-            throw new RuntimeException(e);
-        }
-        // Parse the file
-        File mJsonFile = new File("models.json");
-        parseFile(mJsonFile);
-        logger.info(mm);
-    }
+//    public static void main(String[] args) {
+//        logger.info(mm);
+//        List<Object> list = new ArrayList<>();
+//        list.add(buildOrganization());
+//        list.add(buildUser());
+//        list.add(buildExamDocument());
+//        list.add(buildExamLink());
+//        list.add(buildExamPageContent());
+//        logger.info(mm + G.toJson(list));
+//
+//        var mJson = G.toJson(list);
+//        // Write mJson to file models.json
+//        try (FileWriter fileWriter = new FileWriter("models.json")) {
+//            fileWriter.write(mJson);
+//            logger.info("mJson written to models.json");
+//        } catch (IOException e) {
+//            logger.severe("An IO exception occurred while writing to file: " + e.getMessage());
+//            throw new RuntimeException(e);
+//        }
+//        // Parse the file
+//        File mJsonFile = new File("models.json");
+//        parseFile(mJsonFile);
+//        logger.info(mm);
+//    }
     public static void parseFile(File mJsonFile) {
         try (FileReader fileReader = new FileReader(mJsonFile)) {
             // Read the contents of the file
