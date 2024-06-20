@@ -6,7 +6,6 @@ import com.boha.skunk.services.CloudStorageService;
 import com.boha.skunk.services.DocumentProcessor;
 import com.boha.skunk.services.ExamPageContentService;
 import com.boha.skunk.services.SgelaFirestoreService;
-import com.boha.skunk.vertex.PdfSummarizer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 import java.util.List;
 
-@RequestMapping("/examPageContents")
+@RequestMapping("/examPages")
 @RestController
 //@RequiredArgsConstructor
 public class ExamPageContentController {
@@ -25,26 +24,23 @@ public class ExamPageContentController {
     final SgelaFirestoreService sgelaFirestoreService;
     final CloudStorageService cloudStorageService;
     final DocumentProcessor documentProcessor;
-    final PdfSummarizer pdfSummarizer;
 
-    public ExamPageContentController(ExamPageContentService examPageContentService, SgelaFirestoreService sgelaFirestoreService, CloudStorageService cloudStorageService, DocumentProcessor documentProcessor, PdfSummarizer pdfSummarizer) {
+    public ExamPageContentController(ExamPageContentService examPageContentService,
+                                     SgelaFirestoreService sgelaFirestoreService,
+                                     CloudStorageService cloudStorageService,
+                                     DocumentProcessor documentProcessor) {
         this.examPageContentService = examPageContentService;
         this.sgelaFirestoreService = sgelaFirestoreService;
         this.cloudStorageService = cloudStorageService;
         this.documentProcessor = documentProcessor;
-        this.pdfSummarizer = pdfSummarizer;
     }
 
     @GetMapping("/ping")
     public String ping() {
         return "\uD83D\uDC9C\uD83D\uDC9C ExamPageContentController pinged. at " + new Date().toInstant().toString();
     }
-    @GetMapping("/summarizePdf")
-    public ResponseEntity<String> summarizePdf(
-            @RequestParam String pdfUrl, @RequestParam String prompt) throws Exception {
-        String result = pdfSummarizer.summarizePdf(pdfUrl, prompt);
-        return ResponseEntity.ok(result);
-    }
+
+
     @GetMapping("/extractPageContentForExam")
     public ResponseEntity<List<ExamPageContent>> extractPageContentForExam(
             @RequestParam Long examLinkId) throws Exception {

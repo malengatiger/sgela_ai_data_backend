@@ -89,6 +89,12 @@ public class SgelaFirestoreService {
         return result;
     }
 
+    public String addSummarizedPdf(SummarizedPdf summarizedPdf) throws ExecutionException, InterruptedException {
+        String result = addDocument(summarizedPdf);
+        logger.info(mm + ".... SummarizedPdf added to Firestore: " + result);
+        return result;
+    }
+
     public String addExamDocument(ExamDocument doc) throws ExecutionException, InterruptedException {
         String result = addDocument(doc);
         logger.info(mm + ".... ExamDocument added to Firestore: " + result);
@@ -440,12 +446,12 @@ public class SgelaFirestoreService {
     }
 
     public User getUserByFirebaseId(String firebaseUserId) throws Exception {
-        var list = getDocumentsByStringProperty(User.class.getSimpleName(),
+        var list = getDocumentsByStringProperty("SgelaUser",
                 "firebaseUserId", firebaseUserId, null);
         if (!list.isEmpty()) {
             return list.get(0).toObject(User.class);
         }
-        throw new Exception("User not found in Firestore");
+        throw new Exception("SgelaUser not found in Firestore: " + firebaseUserId);
     }
 
     public User updateUser(User user) throws Exception {

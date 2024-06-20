@@ -1,7 +1,5 @@
 package com.boha.skunk.filters;
 
-import com.boha.skunk.data.User;
-import com.boha.skunk.services.SgelaFirestoreService;
 import com.boha.skunk.util.CustomErrorResponse;
 import com.boha.skunk.util.E;
 import com.google.api.core.ApiFuture;
@@ -37,14 +35,12 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     private static final Gson G = new GsonBuilder().setPrettyPrinting().create();
     @Value("${spring.profiles.active}")
     private String profile;
-    private final SgelaFirestoreService sgelaFirestoreService;
+
+//    private final SgelaFirestoreService sgelaFirestoreService;
 
     @Value("${authOn}")
     private int authOn;
 
-    public AuthenticationFilter(SgelaFirestoreService sgelaFirestoreService) {
-        this.sgelaFirestoreService = sgelaFirestoreService;
-    }
 
 
     @Override
@@ -90,20 +86,15 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         //allow localhost
-        if (url.contains("localhost") || url.contains("192.168.88.2")
-                || url.contains("192.168.86.230")) {
-            logger.info(mm + " contextPath: " + httpServletRequest.getContextPath()
-                    + E.AMP + " requestURI: " + httpServletRequest.getRequestURI() + "\n\n");
-            logger.info(mm + "  \uD83D\uDE0E \uD83D\uDE0E \uD83D\uDE0E allowing call from localhost or 192.168.86.242");
-            doFilter(httpServletRequest, httpServletResponse, filterChain);
-            return;
-        }
+//        if (url.contains("localhost") || url.contains("192.168.88.2")
+//                || url.contains("192.168.86.230")) {
+//            logger.info(mm + " contextPath: " + httpServletRequest.getContextPath()
+//                    + E.AMP + " requestURI: " + httpServletRequest.getRequestURI() + "\n\n");
+//            logger.info(mm + "  \uD83D\uDE0E \uD83D\uDE0E \uD83D\uDE0E allowing call from localhost or 192.168.86.242");
+//            doFilter(httpServletRequest, httpServletResponse, filterChain);
+//            return;
+//        }
 
-        //todo - turn authentication on when ready
-        int num = 11;
-        if (num == 11) {
-
-        }
 
         String m = httpServletRequest.getHeader("Authorization");
         if (m == null) {
@@ -117,16 +108,18 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
             if (mToken != null) {
                 String userId = mToken.getUid();
-                User user = sgelaFirestoreService.getUserByFirebaseId(userId);
-                if (user != null) {
-                    logger.info("\uD83D\uDE21 \uD83D\uDE21 \uD83D\uDE21  user is known,  .. enter sesame@");
-                    doFilter(httpServletRequest, httpServletResponse, filterChain);
-                    return;
-                } else {
-                    logger.info("\uD83D\uDE21 \uD83D\uDE21 \uD83D\uDE21  user unknown, possible new registration");
-                    sendError(httpServletResponse, "user unknown, possible new registratio");
-
-                }
+                logger.info("\uD83D\uDE21 \uD83D\uDE21 \uD83D\uDE21  user is known,  .. enter sesame@" + userId);
+                doFilter(httpServletRequest, httpServletResponse, filterChain);
+//                User user = sgelaFirestoreService.getUserByFirebaseId(userId);
+//                if (user != null) {
+//                    logger.info("\uD83D\uDE21 \uD83D\uDE21 \uD83D\uDE21  user is known,  .. enter sesame@");
+//                    doFilter(httpServletRequest, httpServletResponse, filterChain);
+//                    return;
+//                } else {
+//                    logger.info("\uD83D\uDE21 \uD83D\uDE21 \uD83D\uDE21  user unknown, possible new registration");
+//                    sendError(httpServletResponse, "user unknown, possible new registratio");
+//
+//                }
 
             } else {
                 logger.info("\uD83D\uDE21 \uD83D\uDE21 \uD83D\uDE21 request has been forbidden, token invalid");

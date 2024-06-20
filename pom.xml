@@ -38,6 +38,7 @@
             <artifactId>latex-converter</artifactId>
             <version>1.0.1</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.de-swaef/Markdown2Pdf -->
         <dependency>
             <groupId>com.de-swaef</groupId>
@@ -166,24 +167,22 @@
             <artifactId>google-api-services-androidpublisher</artifactId>
             <version>v3-rev20240222-2.0.0</version>
         </dependency>
-
-
-
     </dependencies>
     <dependencyManagement>
         <dependencies>
+            <!-- https://mvnrepository.com/artifact/com.google.cloud/spring-cloud-gcp-dependencies -->
             <dependency>
                 <groupId>com.google.cloud</groupId>
                 <artifactId>spring-cloud-gcp-dependencies</artifactId>
-                <version>4.9.0</version>
+                <version>5.4.1</version>
                 <type>pom</type>
-                <scope>import</scope>
             </dependency>
+
 
             <dependency>
                 <groupId>com.google.cloud</groupId>
                 <artifactId>libraries-bom</artifactId>
-                <version>  26.38.0</version>
+                <version>  26.42.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

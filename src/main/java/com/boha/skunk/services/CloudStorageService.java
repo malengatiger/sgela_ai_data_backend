@@ -106,6 +106,23 @@ public class CloudStorageService {
                 + (file.length() / 1024) + "K bytes");
         return file;
     }
+    public File downloadPdfFileByUri(String gsUri) throws IOException {
+        File dir = DirectoryUtils.createDirectoryIfNotExists("pdfs");
+        String path = dir.getPath()
+                + "/pdf_" + System.currentTimeMillis() + ".pdf";
+        File file = new File(path);
+
+        Bucket bucket = storage.get(bucketName);
+        Blob blob = bucket.get(gsUri);
+        blob.downloadTo(Paths.get(path));
+
+        // Get the file size after the download is complete
+        long fileSizeInBytes = file.length();
+        logger.info(mm + "PDF File downloaded from Cloud Storage: "
+                + (fileSizeInBytes / 1024) + "K bytes");
+        return file;
+    }
+
 
     static final int EXAM_FILE = 0;
     static final int ANSWER_FILE = 1;
