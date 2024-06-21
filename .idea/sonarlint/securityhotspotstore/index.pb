@@ -245,3 +245,21 @@ n
 >src/main/java/com/boha/skunk/services/MultiTurnMultimodal.java,d/f/df2171df0ae666ae4331d71a9f4481b5fd3f471a
 L
 summarized/3437471189503.pdf,d/2/d2f984f7153ae964556ec2cb46bfded9af1defea
+o
+?src/main/java/com/boha/skunk/services/PDFSummarizerService.java,b/4/b4bbc31b9320002090162c7cf4218ca0917b52e0
+b
+2src/main/java/com/boha/skunk/data/ParseResult.java,e/d/ed64fa1cc5442bdf59e76e10f1ad9c462a679bcf
+h
+8src/main/java/com/boha/skunk/services/ParseMarkdown.java,6/c/6ce87fbd839d8be3ff817bcbe88351302867b54a
+f
+6src/main/java/com/boha/skunk/services/HTMLCreator.java,9/4/942c1082bc8af9b5b7185c467b24687b07abf2d0
+L
+summarized/3437504268129.pdf,9/7/978d9a81c0115b5821ac05e69628bf5b37e63122
+L
+summarized/3437525637837.pdf,e/6/e663a6e5c488287c3813952209f42c2a1c20451a
+[
++summarized/1718568443552_1718973129772.html,8/1/814e0682256d16697d27d6404264ed2a45f7ff9e
+[
++summarized/1718568443163_1718972406459.html,f/f/ffad3e1415fc76ee767dc625bed143fc2d367076
+e
+5src/main/java/com/boha/skunk/data/SummarizedExam.java,3/5/35142de8990b860004ad2c49e4d1f8921206604a

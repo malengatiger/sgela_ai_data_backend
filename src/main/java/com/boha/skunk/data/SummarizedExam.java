@@ -1,6 +1,6 @@
 package com.boha.skunk.data;
 
-public class SummarizedPdf {
+public class SummarizedExam {
     private String concepts;
     private String lessonPlan;
     private String pdfUri;

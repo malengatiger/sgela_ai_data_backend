@@ -89,9 +89,9 @@ public class SgelaFirestoreService {
         return result;
     }
 
-    public String addSummarizedPdf(SummarizedPdf summarizedPdf) throws ExecutionException, InterruptedException {
-        String result = addDocument(summarizedPdf);
-        logger.info(mm + ".... SummarizedPdf added to Firestore: " + result);
+    public String addSummarizedExam(SummarizedExam summarizedExam) throws ExecutionException, InterruptedException {
+        String result = addDocument(summarizedExam);
+        logger.info(mm + ".... SummarizedExam added to Firestore: " + result);
         return result;
     }
 
