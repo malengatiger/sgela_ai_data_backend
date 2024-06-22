@@ -2,7 +2,7 @@ package com.boha.skunk.controllers;
 
 
 import com.boha.skunk.data.SummarizedExam;
-import com.boha.skunk.services.PDFSummarizerService;
+import com.boha.skunk.services.PDFSummarizerAgent;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +16,10 @@ import java.util.Date;
 //@RequiredArgsConstructor
 public class PdfServiceController {
 
-    final PDFSummarizerService pdfSummarizerService;
+    final PDFSummarizerAgent pdfSummarizerAgent;
 
-    public PdfServiceController(PDFSummarizerService pdfSummarizerService) {
-        this.pdfSummarizerService = pdfSummarizerService;
+    public PdfServiceController(PDFSummarizerAgent pdfSummarizerAgent) {
+        this.pdfSummarizerAgent = pdfSummarizerAgent;
     }
 
 
@@ -33,7 +33,7 @@ public class PdfServiceController {
     public ResponseEntity<SummarizedExam> summarizePdf(
             @RequestParam Long examLinkId,  @RequestParam int weeks) throws Exception {
 
-        var response = pdfSummarizerService.summarizePdf(  examLinkId, weeks);
+        var response = pdfSummarizerAgent.summarizePdf(  examLinkId, weeks);
         return ResponseEntity.ok(response);
     }
 

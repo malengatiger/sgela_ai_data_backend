@@ -263,3 +263,13 @@ L
 +summarized/1718568443163_1718972406459.html,f/f/ffad3e1415fc76ee767dc625bed143fc2d367076
 e
 5src/main/java/com/boha/skunk/data/SummarizedExam.java,3/5/35142de8990b860004ad2c49e4d1f8921206604a
+m
+=src/main/java/com/boha/skunk/services/PDFSummarizerAgent.java,e/3/e3f444f8912b3c8f31c6d84916b583dcefdf76ca
+[
++summarized/1718568658211_1719009339351.html,5/c/5c16773a930700e92c65379c247e39905e4f5685
+F
+summarized/summed.json,7/2/7292125a9d679144e3e035336c0651c00284f422
+j
+:src/main/java/com/boha/skunk/util/SummarizerException.java,3/f/3f92618f3cb45a0127a96059485bda696fbf73ee
+c
+3src/main/java/com/boha/skunk/util/ErrorMessage.java,3/f/3f1afb0b423853f4927d758861be49952a879a42

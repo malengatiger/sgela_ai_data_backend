@@ -34,7 +34,8 @@ public class CloudStorageService {
     static final Gson G = new GsonBuilder()
             .registerTypeAdapter(Duration.class, new DurationTypeAdapter())
             .setPrettyPrinting().create();
-
+    @Value("${spring.profiles.active}")
+    private String activeProfile;
     /**
      * Initialize Firebase Admin SDK and get the storage instance using default credentials
      *
@@ -101,9 +102,11 @@ public class CloudStorageService {
         var mUrl = URLEncoder.encode(url, StandardCharsets.UTF_8);
         FileUtils.copyURLToFile(new URL(url),
                 file);
+        if (activeProfile.equals("dev")) {
+            logger.info(mm + "PDF File downloaded from Web by url:"
+                    + (file.length() / 1024) + "K bytes");
+        }
 
-        logger.info(mm + "PDF File downloaded from Web"
-                + (file.length() / 1024) + "K bytes");
         return file;
     }
     public File downloadPdfFileByUri(String gsUri) throws IOException {
@@ -118,8 +121,15 @@ public class CloudStorageService {
 
         // Get the file size after the download is complete
         long fileSizeInBytes = file.length();
-        logger.info(mm + "PDF File downloaded from Cloud Storage: "
-                + (fileSizeInBytes / 1024) + "K bytes");
+        if (activeProfile.equals("dev")) {
+            var msg3a = mm + "create a lessonPlan  .... ";
+            logger.info(msg3a);
+        }
+
+        if (activeProfile.equals("dev")) {
+            logger.info(mm + "PDF File downloaded from Cloud Storage by uri: "
+                    + (fileSizeInBytes / 1024) + "K bytes");
+        }
         return file;
     }
 

@@ -9,7 +9,10 @@ public class SummarizedExam {
     private Long examLinkId;
     private String date;
     private String firebaseUserId;
-
+    private String answers;
+    private int totalTokens;
+    private int promptTokens;
+    private int candidatesTokens;
 
     public String getDate() {
         return date;
@@ -73,5 +76,37 @@ public class SummarizedExam {
 
     public void setPdfUri(String pdfUri) {
         this.pdfUri = pdfUri;
+    }
+
+    public String getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(String answers) {
+        this.answers = answers;
+    }
+
+    public int getTotalTokens() {
+        return totalTokens;
+    }
+
+    public void setTotalTokens(int totalTokens) {
+        this.totalTokens = totalTokens;
+    }
+
+    public int getPromptTokens() {
+        return promptTokens;
+    }
+
+    public void setPromptTokens(int promptTokens) {
+        this.promptTokens = promptTokens;
+    }
+
+    public int getCandidatesTokens() {
+        return candidatesTokens;
+    }
+
+    public void setCandidatesTokens(int candidatesTokens) {
+        this.candidatesTokens = candidatesTokens;
     }
 }
